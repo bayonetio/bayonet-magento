@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="bayonet" translate="label" sortOrder="20">
+            <label>Bayonet Anti-Fraud</label>
+        </tab>
+        <section id="bayonetantifraud_general" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General Configuration</label>
+            <tab>bayonet</tab>
+            <resource>Bayonet_BayonetAntiFraud::bayonetantifraud_config</resource>
+            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Module Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>When disabled, the module will not process any orders</comment>
+                </field>
+                <field id="api_mode" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Production Mode Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live API keys have been saved already</comment>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\ApiModeValidation</backend_model>
+                </field>
+                <field id="bayonet_sandbox_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Bayonet Sandbox Key</label>
+                    <comment>The sandbox API key for Bayonet</comment>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\BayonetSandboxKeyValidation</backend_model>
+                </field>
+                <field id="js_sandbox_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Device Fingerprint Sandbox Key</label>
+                    <comment>The sandbox API key for the Device Fingerprint</comment>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\JsSandboxKeyValidation</backend_model>
+                </field>
+                <field id="bayonet_live_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Bayonet Live Key</label>
+                    <comment>The live API key for Bayonet</comment>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\BayonetLiveKeyValidation</backend_model>
+                </field>
+                <field id="js_live_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Device Fingerprint Live Key</label>
+                    <comment>The live API key for the Device Fingerprint</comment>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\JsLiveKeyValidation</backend_model>
+                </field>
+            </group>
+        </section>
+        <section id="bayonetantifraud_backfill" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Backfill</label>
+            <tab>bayonet</tab>
+            <resource>Bayonet_BayonetAntiFraud::bayonetantifraud_config</resource>
+            <group id="backfill" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Backfill</label>
+            <field id="backfill_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Backfill Enabled</label>
+                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <comment>When disabled, the module will not process the backfill</comment>
+            </field>
+            </group>
+        </section>
+    </system>
+</config>
