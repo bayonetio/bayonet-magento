@@ -8,6 +8,7 @@ use \Magento\Framework\App\Config\ScopeConfigInterface;
 use \Magento\Framework\App\Cache\TypeListInterface;
 use \Magento\Framework\Model\ResourceModel\AbstractResource;
 use \Magento\Framework\Data\Collection\AbstractDb;
+use \Bayonet\BayonetAntiFraud\Helper\KeyValidator;
 
 /**
  * Class JsLiveKeyValidation
@@ -16,7 +17,8 @@ use \Magento\Framework\Data\Collection\AbstractDb;
  */
 class JsLiveKeyValidation extends \Magento\Framework\App\Config\Value
 {
-    protected $_config;
+    protected $config;
+    protected $keyValidator;
 
     public function __construct(
         Context $context,
@@ -24,10 +26,12 @@ class JsLiveKeyValidation extends \Magento\Framework\App\Config\Value
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null
+        AbstractDb $resourceCollection = null,
+        KeyValidator $keyValidator
         )
     {
-        $this->_config = $config;
+        $this->config = $config;
+        $this->keyValidator = $keyValidator;
         parent::__construct(
             $context,
             $registry,
@@ -46,26 +50,12 @@ class JsLiveKeyValidation extends \Magento\Framework\App\Config\Value
         $apiKey = $this->getValue();
 
         if (!empty($apiKey) && '**********' !== $apiKey) {
-            $request_url = 'https://fingerprinting.bayonet.io/v2/generate-fingerprint-token';
-            $data_json = [
-                "device" => null,
+            $requestBody = [
                 'auth' => [
                     'jsKey' => $apiKey
                 ]
             ];
-
-            $data_string = json_encode($data_json);
-            $ch = curl_init($request_url);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json')
-            );
-
-            $response = curl_exec($ch);
-            $response = json_decode($response);
-            curl_close($ch);
+            $response = $this->keyValidator->validateKey($apiKey, $requestBody, 'js');
 
             // if the response from the API was successful but the code is not
             // the one expected, then the API key is not valid and an excepction

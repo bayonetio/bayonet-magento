@@ -51,11 +51,6 @@
             <resource>Bayonet_BayonetAntiFraud::bayonetantifraud_config</resource>
             <group id="backfill" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Backfill</label>
-            <field id="backfill_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Backfill Enabled</label>
-                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                <comment>When disabled, the module will not process the backfill</comment>
-            </field>
             </group>
         </section>
     </system>
