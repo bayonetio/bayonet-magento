@@ -9,6 +9,7 @@ use \Magento\Framework\App\Cache\TypeListInterface;
 use \Magento\Framework\Model\ResourceModel\AbstractResource;
 use \Magento\Framework\Data\Collection\AbstractDb;
 use \Bayonet\BayonetAntiFraud\Helper\KeyValidator;
+use \Bayonet\BayonetAntiFraud\Helper\Data;
 
 /**
  * Class BayonetSandboxKeyValidation
@@ -19,6 +20,7 @@ class BayonetSandboxKeyValidation extends \Magento\Framework\App\Config\Value
 {
     protected $config;
     protected $keyValidator;
+    protected $helperData;
 
     public function __construct(
         Context $context,
@@ -27,11 +29,13 @@ class BayonetSandboxKeyValidation extends \Magento\Framework\App\Config\Value
         TypeListInterface $cacheTypeList,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        KeyValidator $keyValidator
-        )
+        KeyValidator $keyValidator,
+        Data $helperData
+    )
     {
         $this->config = $config;
         $this->keyValidator = $keyValidator;
+        $this->helperData = $helperData;
         parent::__construct(
             $context,
             $registry,
@@ -73,11 +77,7 @@ class BayonetSandboxKeyValidation extends \Magento\Framework\App\Config\Value
                 ));
             }
         } elseif (!empty($apiKey) && '**********' === $apiKey) { // when the merchant doesn't modify an existing key
-            $currentApiKey = $this->config->getValue(
-                'bayonetantifraud_general/general/bayonet_sandbox_key',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            );
-
+            $currentApiKey = $this->helperData->getGeneralConfig('bayonet_sandbox_key');
             $this->setValue($currentApiKey);
             parent::beforeSave();
         }

@@ -8,6 +8,7 @@ use \Magento\Framework\App\Config\ScopeConfigInterface;
 use \Magento\Framework\App\Cache\TypeListInterface;
 use \Magento\Framework\Model\ResourceModel\AbstractResource;
 use \Magento\Framework\Data\Collection\AbstractDb;
+use \Bayonet\BayonetAntiFraud\Helper\Data;
 
 /**
  * Class ApiModeValidation
@@ -16,7 +17,8 @@ use \Magento\Framework\Data\Collection\AbstractDb;
  */
 class ApiModeValidation extends \Magento\Framework\App\Config\Value
 {
-    protected $_config;
+    protected $config;
+    protected $helperData;
 
     public function __construct(
         Context $context,
@@ -24,10 +26,12 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null
-        )
+        AbstractDb $resourceCollection = null,
+        Data $helperData
+    )
     {
-        $this->_config = $config;
+        $this->config = $config;
+        $this->helperData = $helperData;
         parent::__construct(
             $context,
             $registry,
@@ -45,14 +49,8 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
      */
     public function beforeSave() {
         $apiMode = $this->getValue();
-        $bayoLiveKey = $this->_config->getValue(
-            'bayonetantifraud_general/general/bayonet_live_key',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-        $jsLiveKey = $this->_config->getValue(
-            'bayonetantifraud_general/general/js_live_key',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
+        $bayoLiveKey = $this->helperData->getGeneralConfig('bayonet_live_key');
+        $jsLiveKey = $this->helperData->getGeneralConfig('js_live_key');
 
         if (1 === intval($apiMode) && (empty($bayoLiveKey) || empty($jsLiveKey))) {
             throw new \Magento\Framework\Exception\ValidatorException(__(

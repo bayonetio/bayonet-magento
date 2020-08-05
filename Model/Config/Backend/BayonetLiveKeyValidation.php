@@ -9,6 +9,7 @@ use \Magento\Framework\App\Cache\TypeListInterface;
 use \Magento\Framework\Model\ResourceModel\AbstractResource;
 use \Magento\Framework\Data\Collection\AbstractDb;
 use \Bayonet\BayonetAntiFraud\Helper\KeyValidator;
+use \Bayonet\BayonetAntiFraud\Helper\Data;
 
 /**
  * Class BayonetLiveKeyValidation
@@ -19,6 +20,7 @@ class BayonetLiveKeyValidation extends \Magento\Framework\App\Config\Value
 {
     protected $config;
     protected $keyValidator;
+    protected $helperData;
 
     public function __construct(
         Context $context,
@@ -27,11 +29,13 @@ class BayonetLiveKeyValidation extends \Magento\Framework\App\Config\Value
         TypeListInterface $cacheTypeList,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        KeyValidator $keyValidator
-        )
+        KeyValidator $keyValidator,
+        Data $helperData
+    )
     {
         $this->config = $config;
         $this->keyValidator = $keyValidator;
+        $this->helperData = $helperData;
         parent::__construct(
             $context,
             $registry,
@@ -73,18 +77,11 @@ class BayonetLiveKeyValidation extends \Magento\Framework\App\Config\Value
                 ));
             }
         } elseif (!empty($apiKey) && '**********' === $apiKey) { // when the merchant doesn't modify an existing key
-            $currentApiKey = $this->_config->getValue(
-                'bayonetantifraud_general/general/bayonet_live_key',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            );
-
+            $currentApiKey = $this->helperData->getGeneralConfig('bayonet_live_key');
             $this->setValue($currentApiKey);
             parent::beforeSave();
         } elseif (empty($apiKey)) {
-            $currentApiMode = $this->_config->getValue(
-                'bayonetantifraud_general/general/api_mode',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            );
+            $currentApiMode = $this->helperData->getGeneralConfig('api_mode');
 
             if (intval($currentApiMode) === 1) { // to avoid saving an empty live key when the current API mode is set to live
                 throw new \Magento\Framework\Exception\ValidatorException(__(
