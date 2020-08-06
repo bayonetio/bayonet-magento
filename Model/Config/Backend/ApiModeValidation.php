@@ -17,8 +17,7 @@ use \Bayonet\BayonetAntiFraud\Helper\Data;
  */
 class ApiModeValidation extends \Magento\Framework\App\Config\Value
 {
-    protected $config;
-    protected $helperData;
+    protected $dataHelper;
 
     public function __construct(
         Context $context,
@@ -27,11 +26,9 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
         TypeListInterface $cacheTypeList,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        Data $helperData
+        Data $dataHelper
     )
     {
-        $this->config = $config;
-        $this->helperData = $helperData;
         parent::__construct(
             $context,
             $registry,
@@ -40,6 +37,7 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
             $resource,
             $resourceCollection
         );
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -49,8 +47,8 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
      */
     public function beforeSave() {
         $apiMode = $this->getValue();
-        $bayoLiveKey = $this->helperData->getGeneralConfig('bayonet_live_key');
-        $jsLiveKey = $this->helperData->getGeneralConfig('js_live_key');
+        $bayoLiveKey = $this->dataHelper->getGeneralConfig('bayonet_live_key');
+        $jsLiveKey = $this->dataHelper->getGeneralConfig('js_live_key');
 
         if (1 === intval($apiMode) && (empty($bayoLiveKey) || empty($jsLiveKey))) {
             throw new \Magento\Framework\Exception\ValidatorException(__(

@@ -25,22 +25,22 @@
                 <field id="bayonet_sandbox_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Bayonet Sandbox Key</label>
                     <comment>The sandbox API key for Bayonet</comment>
-                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\BayonetSandboxKeyValidation</backend_model>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
                 <field id="js_sandbox_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Device Fingerprint Sandbox Key</label>
                     <comment>The sandbox API key for the Device Fingerprint</comment>
-                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\JsSandboxKeyValidation</backend_model>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
                 <field id="bayonet_live_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Bayonet Live Key</label>
                     <comment>The live API key for Bayonet</comment>
-                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\BayonetLiveKeyValidation</backend_model>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
                 <field id="js_live_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Device Fingerprint Live Key</label>
                     <comment>The live API key for the Device Fingerprint</comment>
-                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\JsLiveKeyValidation</backend_model>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
             </group>
         </section>
