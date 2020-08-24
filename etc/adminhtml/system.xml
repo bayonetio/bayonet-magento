@@ -46,11 +46,21 @@
         </section>
         <section id="bayonetantifraud_backfill" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
-            <label>Backfill</label>
+            <label>Historical Backfill</label>
             <tab>bayonet</tab>
             <resource>Bayonet_BayonetAntiFraud::bayonetantifraud_config</resource>
             <group id="backfill" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Backfill</label>
+            <label>Historical Backfill</label>
+            <comment>
+                The historical backfill is a process we perfom in order to get to know your store in a better way.
+                We check all the orders in your store prior to this module's installation, in this way, we can detect patterns from your customers and how your store behaves in general.
+                Doing this helps the module to have a better accuracy when analysing the new orders in your store for fraud.
+                This section will appear disabled if the API mode is set to sandbox (testing). Please add your live (production) keys first and
+                set the API mode to live (production) in order to be able to use this feature.
+            </comment>
+            <field id="backfill_button" translate="label comment" type="button" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <frontend_model>Bayonet\BayonetAntiFraud\Block\System\Config\Backfill</frontend_model>
+            </field>
             </group>
         </section>
     </system>
