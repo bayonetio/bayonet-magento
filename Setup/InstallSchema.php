@@ -14,19 +14,13 @@ class InstallSchema implements InstallSchemaInterface
 
         //Adds module's main table
         $tableOrders = $setup->getConnection()->newTable(
-            $setup->getTable('bayonet_anti_fraud_orders')
+            $setup->getTable('bayonet_antifraud_orders')
             )->addColumn(
                 'bayonet_id',
                 \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                 null,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
                 'Bayonet ID'
-            )->addColumn(
-                'cart_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-                null,
-                ['unsigned' => true, 'nullable' => true],
-                'Cart ID'
             )->addColumn(
                 'order_id',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
@@ -64,18 +58,6 @@ class InstallSchema implements InstallSchemaInterface
                 ['nullable' => true],
                 'Feedback API response'
             )->addColumn(
-                'historical_api',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-                null,
-                ['unsigned' => true, 'nullable' => true],
-                'Historical API'
-            )->addColumn(
-                'historical_api_response',
-                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-                255,
-                ['nullable' => true],
-                'Historical API response'
-            )->addColumn(
                 'decision',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                 255,
@@ -99,12 +81,56 @@ class InstallSchema implements InstallSchemaInterface
                 null,
                 ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
                 'Date Added'
-            )->setComment("Bayonet Anti-Fraud table");
+            )->setComment("Bayonet Anti-Fraud Orders table");
         $setup->getConnection()->createTable($tableOrders);
+
+        //Adds backfill table
+        $tableBackfill = $setup->getConnection()->newTable(
+            $setup->getTable('bayonet_antifraud_backfill')
+            )->addColumn(
+                'backfill_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                null,
+                ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Backfill ID'
+            )->addColumn(
+                'backfill_status',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false, 'default' => 0],
+                'Backfill Status'
+            )->addColumn(
+                'processed_orders',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false, 'default' => 0],
+                'Processed Orders'
+            )->addColumn(
+                'total_orders',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false, 'default' => 0],
+                'Total Orders'
+            )->addColumn(
+                'last_processed_order',
+                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                255,
+                ['nullable' => false, 'default' => ''],
+                'Last Processed Order'
+            )->addColumn(
+                'last_backfill_order',
+                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                255,
+                ['nullable' => false, 'default' => ''],
+                'Last Backfill Order'
+            )->setComment(
+                'Bayonet Anti-Fraud Backfill table'
+            );
+        $setup->getConnection()->createTable($tableBackfill);
 
         // Adds blocklist table
         $tableBlocklist = $setup->getConnection()->newTable(
-            $setup->getTable('bayonet_anti_fraud_blocklist')
+            $setup->getTable('bayonet_antifraud_blocklist')
             )->addColumn(
                 'blocklist_id',
                 \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
@@ -160,7 +186,7 @@ class InstallSchema implements InstallSchemaInterface
 
         // Adds fingerprint tokens table
         $tableFingerprint = $setup->getConnection()->newTable(
-            $setup->getTable('bayonet_anti_fraud_fingerprint')
+            $setup->getTable('bayonet_antifraud_fingerprint')
             )->addColumn(
                 'fingerprint_id',
                 \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
