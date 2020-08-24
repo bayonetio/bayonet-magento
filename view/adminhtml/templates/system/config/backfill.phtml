@@ -1,0 +1,89 @@
+<script>
+require([
+    'jquery',
+    'prototype',
+], function($){
+    $(document).ready(function(){
+        jQuery('#backfillInitiate').click(function () {
+            initiateBackfill();
+        });
+
+        jQuery('#backfillStop').click(function () {
+            stopBackfill();
+        });
+    });
+
+    /**
+     * Performs an ajax request to the controller defined in the block class
+     */
+    function ajaxRequest(actionToPerform, callback) {
+        $.ajax({
+            method: "POST",
+            url: "<?php /* @escapeNotVerified */ echo $block->getAjaxUrl() ?>",
+            dataType: "json",
+            data: {
+                form_key: window.FORM_KEY,
+                action: actionToPerform
+            },
+            success: callback
+        });
+    }
+
+    /**
+     * Performs an ajax request with initiate as the action to perform.
+     * This will change the backfill mode value to 1 in the database.
+     */
+    function initiateBackfill() {
+        ajaxRequest('initiate', initiateCallback);
+    }
+
+    /**
+     * Callback to give feedback to the merchant (if necessary)
+     */
+    function initiateCallback(result) {
+        if (result === 'ok') {
+            executeBackfill();
+        } else if (result === 'error') {
+            alert('Unable to start backfill');
+        }
+    }
+
+    /**
+     * Performs an ajax request with execute as the action to perform.
+     * Executes the backfill process in the controller.
+     */
+    function executeBackfill() {
+        $.ajax({
+            method: "POST",
+            url: "<?php /* @escapeNotVerified */ echo $block->getAjaxUrl() ?>",
+            dataType: "json",
+            data: {
+                form_key: window.FORM_KEY,
+                action: 'execute'
+            }
+        });
+        location.reload();
+    }
+
+    /**
+     * Performs an ajax request with stop as the action to perform.
+     * This will change the backfill mode value to 0 in the database.
+     */
+    function stopBackfill() {
+        ajaxRequest('stop', stopCallback);
+    }
+
+    /**
+     * Callback to give feedback to the merchant (if necessary)
+     */
+    function stopCallback(result) {
+        if (result === 'ok') {
+            location.reload();
+        } else if (result === 'error') {
+            alert('Unable to stop backfill');
+        }
+    }
+});
+</script>
+
+<?php echo $block->getButtonHtml() ?>
