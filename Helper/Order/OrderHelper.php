@@ -2,16 +2,27 @@
 
 namespace Bayonet\BayonetAntiFraud\Helper\Order;
 
+use \Bayonet\BayonetAntiFraud\Helper\DirectQuery;
+
 /**
  * Helper class to manage the data of an order object and get the necessary
- * data in the required format for a Bayonet API request.
+ * data in the required format for a Bayonet API request
  */
 class OrderHelper
 {
     protected $order;
+    protected $directQuery;
+
+    public function __construct(
+        DirectQuery $directQuery
+    ) {
+        $this->directQuery = $directQuery;
+    }
 
     /**
-     * Sets the current order to be managed.
+     * Sets the current order to be managed
+     * 
+     * @param \Magento\Sales\Model\Order $processingOrder
      */
     public function setOrder($processingOrder)
     {
@@ -19,7 +30,9 @@ class OrderHelper
     }
 
     /**
-     * Gets the current order being managed.
+     * Gets the current order being managed
+     * 
+     * @return \Magento\Sales\Model\Order
      */
     public function getOrder()
     {
@@ -27,7 +40,34 @@ class OrderHelper
     }
 
     /**
-     * Gets the customer name of an order object.
+     * Generates the request body for an order object
+     * 
+     * @return array
+     */
+    public function generateRequestBody()
+    {
+        $requestBody = [
+            'channel' => 'ecommerce',
+            'order_id' => $this->getOrder()->getId(),
+            'consumer_internal_id' => $this->getOrder()->getCustomerId(),
+            'consumer_name' => $this->getCustomerName(),
+            'email' => $this->getOrder()->getCustomerEmail(),
+            'telephone' => $this->getOrder()->getBillingAddress()->getTelephone(),
+            'billing_address' => $this->getBillingAddress(),
+            'shipping_address' => $this->getShippingAddress(),
+            'products' => $this->getProducts(),
+            'currency_code' => $this->getOrder()->getOrderCurrencyCode(),
+            'transaction_amount' => number_format((float)$this->getOrder()->getGrandTotal(), 1, '.', ''),
+            'transaction_time' => strtotime($this->getOrder()->getCreatedAt())
+        ];
+
+        return $requestBody;
+    }
+
+    /**
+     * Gets the customer name of an order object
+     * 
+     * @return string
      */
     public function getCustomerName()
     {
@@ -36,7 +76,9 @@ class OrderHelper
 
     /**
      * Generates an address in the required format for the Bayonet API request using
-     * the provided address object.
+     * the provided address object
+     * 
+     * @return array
      */
     public function generateAddress($address)
     {
@@ -57,7 +99,7 @@ class OrderHelper
     }
 
     /**
-     * Gets the billing address of an order object.
+     * Gets the billing address of an order object
      */
     public function getBillingAddress()
     {
@@ -66,7 +108,7 @@ class OrderHelper
     }
 
     /**
-     * Gets the shipping address of an order object.
+     * Gets the shipping address of an order object
      */
     public function getShippingAddress()
     {
@@ -76,7 +118,7 @@ class OrderHelper
 
     /**
      * Gets the products of an order object and adds them to an array.
-     * Each product contains its ID, name & price.
+     * Each product contains its ID, name & price
      */
     public function getProducts()
     {
