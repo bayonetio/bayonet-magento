@@ -7,10 +7,5 @@
                 <api_mode>0</api_mode>
             </general>
         </bayonetantifraud_general>
-        <bayonetantifraud_backfill>
-            <backfill>
-                <backfill_enable>0</backfill_enable>
-            </backfill>
-        </bayonetantifraud_backfill>
     </default>
 </config>
