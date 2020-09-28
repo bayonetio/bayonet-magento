@@ -3,6 +3,7 @@
 namespace Bayonet\BayonetAntiFraud\Helper\Order;
 
 use \Bayonet\BayonetAntiFraud\Helper\DirectQuery;
+use \Bayonet\BayonetAntiFraud\Model\BayonetFingerprintFactory;
 
 /**
  * Helper class to manage the data of an order object and get the necessary
@@ -12,11 +13,14 @@ class OrderHelper
 {
     protected $order;
     protected $directQuery;
+    protected $bayonetFingerprintFactory;
 
     public function __construct(
-        DirectQuery $directQuery
+        DirectQuery $directQuery,
+        BayonetFingerprintFactory $bayonetFingerprintFactory
     ) {
         $this->directQuery = $directQuery;
+        $this->bayonetFingerprintFactory = $bayonetFingerprintFactory;
     }
 
     /**
@@ -40,11 +44,14 @@ class OrderHelper
     }
 
     /**
-     * Generates the request body for an order object
+     * Generates the request body for an order object, depending on the
+     * request type, the body will be generated for either a backfill
+     * order or a consulting order
      * 
+     * @param string $requestType
      * @return array
      */
-    public function generateRequestBody()
+    public function generateRequestBody($requestType)
     {
         $requestBody = [
             'channel' => 'ecommerce',
@@ -60,6 +67,19 @@ class OrderHelper
             'transaction_amount' => number_format((float)$this->getOrder()->getGrandTotal(), 1, '.', ''),
             'transaction_time' => strtotime($this->getOrder()->getCreatedAt())
         ];
+
+        if ($requestType === 'consulting') {
+            $bayonetFingerprint = $this->bayonetFingerprintFactory->create();
+            $fingerprintToken = $bayonetFingerprint->load($this->getOrder()->getCustomerId(), 'customer_id');            if (!empty($fingerprintToken->getData())) {
+                $requestBody['bayonet_fingerprint_token'] = $fingerprintToken->getData('fingerprint_token');
+                $resetTokenData = array(
+                    'fingerprint_id' => $fingerprintToken->getData('fingerprint_id'),
+                    'fingerprint_token' => null
+                );
+                $bayonetFingerprint->setData($resetTokenData);
+                $bayonetFingerprint->save();
+            }
+        }
 
         return $requestBody;
     }
