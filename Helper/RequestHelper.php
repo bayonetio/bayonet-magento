@@ -1,6 +1,6 @@
 <?php
 
-namespace Bayonet\BayonetAntiFraud\Api;
+namespace Bayonet\BayonetAntiFraud\Helper;
 
 /**
  * Contains the required functions to perform request to the Bayonet/Fingerprint API
