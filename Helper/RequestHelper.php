@@ -3,14 +3,15 @@
 namespace Bayonet\BayonetAntiFraud\Api;
 
 /**
- * Class RequestHelper
- *
  * Contains the required functions to perform request to the Bayonet/Fingerprint API
  */
 class RequestHelper
 {
     /**
      * Performs a consulting request to the Bayonet API
+     * 
+     * @param array $requestBody
+     * @return array
      */
     public function consulting($requestBody)
     {
@@ -21,6 +22,9 @@ class RequestHelper
 
     /**
      * Performs a feedback historical request to the Bayonet API
+     * 
+     * @param array $requestBody
+     * @return array
      */
     public function feedbackHistorical($requestBody)
     {
@@ -32,12 +36,67 @@ class RequestHelper
     /**
      * Performs a request to the Fingerprint API
      * Used only to validate fingerprint API keys
+     * 
+     * @param string $requestBody
+     * @return array
      */
     public function deviceFingerprint($requestBody)
     {
         $deviceFingerprintResponse = $this->request('', $requestBody, 'js');
 
         return $deviceFingerprintResponse;
+    }
+
+    /**
+     * Defines "whitelist/add" as the call to be executed in the request method
+     *
+     * @param array $requestBody
+     * @return array
+     */
+    public function addWhitelist($requestBody)
+    {
+        $listResponse = $this->request('sigma/labels/whitelist/add', $requestBody, 'bayonet');
+
+        return $listResponse;
+    }
+
+    /**
+     * Defines "whitelist/remove" as the call to be executed in the request method
+     *
+     * @param array $requestBody
+     * @return array
+     */
+    public function removeWhitelist($requestBody)
+    {
+        $listResponse = $this->request('sigma/labels/whitelist/remove', $requestBody, 'bayonet');
+
+        return $listResponse;
+    }
+
+    /**
+     * Defines "block/add" as the call to be executed in the request method
+     *
+     * @param array $requestBody
+     * @return array
+     */
+    public function addBlocklist($requestBody)
+    {
+        $listResponse = $this->request('sigma/labels/block/add', $requestBody, 'bayonet');
+
+        return $listResponse;
+    }
+
+    /**
+     * Defines "block/remove" as the call to be executed in the request method
+     *
+     * @param array $requestBody
+     * @return array
+     */
+    public function removeBlocklist($requestBody)
+    {
+        $listResponse = $this->request('sigma/labels/block/remove', $requestBody, 'bayonet');
+
+        return $listResponse;
     }
 
     /**

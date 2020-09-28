@@ -6,7 +6,7 @@ use \Magento\Backend\App\Action;
 use \Magento\Backend\App\Action\Context;
 use \Bayonet\BayonetAntiFraud\Model\BayonetBlocklistFactory;
 use \Bayonet\BayonetAntiFraud\Helper\GetData;
-use \Bayonet\BayonetAntiFraud\Api\RequestHelper;
+use \Bayonet\BayonetAntiFraud\Helper\RequestHelper;
 use \Magento\Customer\Model\CustomerFactory;
 
 /**

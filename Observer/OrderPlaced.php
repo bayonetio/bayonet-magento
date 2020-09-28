@@ -8,7 +8,7 @@ use \Magento\Framework\Api\SearchCriteriaBuilder;
 use \Magento\Framework\Api\FilterBuilder;
 use \Magento\Framework\Api\Search\FilterGroupBuilder;
 use \Magento\Framework\Api\SortOrder;
-use \Bayonet\BayonetAntiFraud\Api\RequestHelper;
+use \Bayonet\BayonetAntiFraud\Helper\RequestHelper;
 use \Bayonet\BayonetAntiFraud\Helper\GetData;
 use \Bayonet\BayonetAntiFraud\Helper\SetData;
 use \Bayonet\BayonetAntiFraud\Model\BayonetOrderFactory;
