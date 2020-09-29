@@ -112,4 +112,59 @@ class DirectQuery
 
         return $apiKey;
     }
+
+    /**
+     * Gets the Bayonet Tracking ID of an order in the Bayonet Orders table (if exists)
+     * 
+     * @return string
+     */
+    public function getTrackingId($orderId)
+    {
+        $trackingId = $this->orderQuery('bayonet_antifraud_orders', 'bayonet_tracking_id', $orderId);
+
+        return $trackingId;
+    }
+
+    /**
+     * Gets the API response of an order in the Bayonet Orders table (if exists)
+     * 
+     * @return string
+     */
+    public function getApiResponse($orderId)
+    {
+        $apiResponse = $this->orderQuery('bayonet_antifraud_orders', 'consulting_api_response', $orderId);
+
+        return $apiResponse;
+    }
+
+    /**
+     * Gets the Decision of an order in the Bayonet Orders table (if exists)
+     * 
+     * @return string
+     */
+    public function getDecision($orderId)
+    {
+        $decision = $this->orderQuery('bayonet_antifraud_orders', 'decision', $orderId);
+
+        return $decision;
+    }
+
+    /**
+     * Gets the triggered rules of an order in the Bayonet Orders table (if exist)
+     * 
+     * @return string
+     */
+    public function getRules($orderId)
+    {
+        $rules = $this->orderQuery('bayonet_antifraud_orders', 'triggered_rules', $orderId);
+
+        return $rules;
+    }
+
+    public function getFingerprintToken($customerId)
+    {
+        $finrgerprintToken = $this->customerQuery('bayonet_antifraud_fingerprint', 'fingerprint_token', $customerId);
+
+        return $finrgerprintToken;
+    }
 }
