@@ -1,0 +1,28 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+            id="Bayonet_BayonetAntiFraud::orders_menu"
+            title="Bayonet Anti-Fraud"
+            translate="title"
+            module="Bayonet_BayonetAntiFraud"
+            sortOrder="20"
+            resource="Bayonet_BayonetAntiFraud::orders_menu"
+        />
+        <add
+            id="Bayonet_BayonetAntiFraud::bayonet_orders"
+            title="Orders Processed by Bayonet"
+            translate="title" module="Bayonet_BayonetAntiFraud"
+            sortOrder="10" resource="Bayonet_BayonetAntiFraud::bayonet_orders"
+            parent="Bayonet_BayonetAntiFraud::orders_menu"
+            action="bayonet_bayonetantifraud/bayonetorder/index"
+        />
+        <add
+            id="Bayonet_BayonetAntiFraud::bayonet_blocklist"
+            title="Blocklist/Whitelist"
+            translate="title" module="Bayonet_BayonetAntiFraud"
+            sortOrder="10" resource="Bayonet_BayonetAntiFraud::bayonet_blocklist"
+            parent="Bayonet_BayonetAntiFraud::orders_menu"
+            action="bayonet_bayonetantifraud/bayonetblocklist/index"
+        />
+    </menu>
+</config>

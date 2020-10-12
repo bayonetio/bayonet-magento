@@ -8,7 +8,7 @@ use \Magento\Framework\App\Config\ScopeConfigInterface;
 use \Magento\Framework\App\Cache\TypeListInterface;
 use \Magento\Framework\Model\ResourceModel\AbstractResource;
 use \Magento\Framework\Data\Collection\AbstractDb;
-use \Bayonet\BayonetAntiFraud\Api\RequestHelper;
+use \Bayonet\BayonetAntiFraud\Helper\RequestHelper;
 use \Bayonet\BayonetAntiFraud\Helper\GetData;
 
 /**
