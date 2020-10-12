@@ -1,0 +1,46 @@
+<script>
+    require([
+        'jquery',
+        'jquery/ui',
+        'domReady!',
+    ], function($){
+        function getResponse(response) {
+            var customerId = "<?php echo $block->getCustomerId() ?>";
+            $.ajax({
+                method: "POST",
+                url: "<?php /* @escapeNotVerified */ echo $block->getAjaxUrl() ?>",
+                dataType: "json",
+                data: {
+                    form_key: window.FORM_KEY,
+                    customer: customerId,
+                    fingerprint: response.bayonet_fingerprint_token
+                }
+            });
+        }
+    
+        $(document).ready(function() {
+            var moduleEnabled = "<?php echo $block->getEnabled() ?>";
+            var isCustomerLoggedIn = "<?php echo $block->getCustomerIsLoggedIn() ?>"
+            if (parseInt(moduleEnabled) === 1) {
+                if (isCustomerLoggedIn) {
+                    $.getScript('https://cdn.bayonet.io/fingerprinting-2.0.min.js', function() {
+                        initBayonet();
+                    });
+                }
+            }
+    
+            function initBayonet() {
+                var apiKey = "<?php echo $block->getApiKey() ?>";
+                if (apiKey) {
+                    _bayonet.init({
+                        js_key: apiKey,
+                        callback_function: 'getResponse'
+                    });
+                    _bayonet.track();
+                }
+            }
+        });
+    
+        window.getResponse = getResponse;
+    });
+</script>

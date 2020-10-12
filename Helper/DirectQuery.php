@@ -32,7 +32,7 @@ class DirectQuery
         $query = $connection->select()->from($tableName, $requestedValue)->where('path = :path');
         $path = 'bayonetantifraud_general/general/'.$configPath;
         $bind = [':path' => (string)$path];
-        $result = (int)$connection->fetchOne($query, $bind);
+        $result = $connection->fetchOne($query, $bind);
 
         return $result;
     }
@@ -84,9 +84,9 @@ class DirectQuery
      */
     public function getEnabled()
     {
-        $enabled = $this->configQuery('core_config_data', 'value', 'enabled');
+        $enabled = $this->configQuery('core_config_data', 'value', 'enable');
 
-        return $enabled;
+        return intval($enabled);
     }
 
     /**
@@ -98,6 +98,18 @@ class DirectQuery
     {
         $apiMode = $this->configQuery('core_config_data', 'value', 'api_mode');
 
-        return $apiMode;
+        return intval($apiMode);
+    }
+
+    /**
+     * Gets the current value for the specified API key
+     * 
+     * @return string
+     */
+    public function getApiKey($keyPath)
+    {
+        $apiKey = $this->configQuery('core_config_data', 'value', $keyPath);
+
+        return $apiKey;
     }
 }

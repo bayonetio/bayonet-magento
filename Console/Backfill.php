@@ -210,7 +210,7 @@ class Backfill extends Command
     protected function prepareRequestBody($order)
     {
         $this->orderHelper->setOrder($order);
-        $requestBody = $this->orderHelper->generateRequestBody();
+        $requestBody = $this->orderHelper->generateRequestBody('backfill');
         $apiKey = $this->getHelper->getConfigValue('bayonet_live_key');
         $requestBody['auth']['api_key'] = $apiKey;
 
