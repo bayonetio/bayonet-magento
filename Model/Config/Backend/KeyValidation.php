@@ -9,7 +9,7 @@ use \Magento\Framework\App\Cache\TypeListInterface;
 use \Magento\Framework\Model\ResourceModel\AbstractResource;
 use \Magento\Framework\Data\Collection\AbstractDb;
 use \Bayonet\BayonetAntiFraud\Api\RequestHelper;
-use \Bayonet\BayonetAntiFraud\Helper\Data;
+use \Bayonet\BayonetAntiFraud\Helper\GetData;
 
 /**
  * Class KeyValidation
@@ -29,7 +29,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         RequestHelper $requestHelper,
-        Data $dataHelper
+        GetData $getHelper
     )
     {
         parent::__construct(
@@ -41,7 +41,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
             $resourceCollection
         );
         $this->requestHelper = $requestHelper;
-        $this->dataHelper = $dataHelper;
+        $this->getHelper = $getHelper;
     }
 
     /**
@@ -95,7 +95,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 }
             }
         } elseif (!empty($apiKey) && '**********' === $apiKey) { // when the merchant doesn't modify an existing key
-            $currentApiKey = $this->dataHelper->getGeneralConfig($fieldId);
+            $currentApiKey = $this->getHelper->getConfigValue($fieldId);
 
             if (strlen($currentApiKey) === 0) { // to avoid trying to trick the module entering a '**********' string
                 throw new \Magento\Framework\Exception\ValidatorException(__(
@@ -106,7 +106,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 parent::beforeSave();
             }
         } elseif (empty($apiKey) && strpos($label, 'Live') !== false) {
-            $currentApiMode = $this->dataHelper->getGeneralConfig('api_mode');
+            $currentApiMode = $this->getHelper->getConfigValue('api_mode');
 
             if (intval($currentApiMode) === 1) { // to avoid saving an empty live key when the current API mode is set to live
                 throw new \Magento\Framework\Exception\ValidatorException(__(

@@ -20,6 +20,16 @@ class RequestHelper
     }
 
     /**
+     * Performs a feedback historical request to the Bayonet API
+     */
+    public function feedbackHistorical($requestBody)
+    {
+        $historicalResponse = $this->request('sigma/feedback-historical', $requestBody, 'bayonet');
+
+        return $historicalResponse;
+    }
+
+    /**
      * Performs a request to the Fingerprint API
      * Used only to validate fingerprint API keys
      */
