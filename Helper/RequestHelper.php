@@ -34,6 +34,19 @@ class RequestHelper
     }
 
     /**
+     * Performs an update transaction request to the Bayonet API
+     * 
+     * @param array $requestBody
+     * @return array
+     */
+    public function updateTransaction($requestBody)
+    {
+        $updateResponse = $this->request('sigma/update-transaction', $requestBody, 'bayonet');
+
+        return $updateResponse;
+    }
+
+    /**
      * Performs a request to the Fingerprint API
      * Used only to validate fingerprint API keys
      * 
