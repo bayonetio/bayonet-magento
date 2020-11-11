@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
-    <event name="sales_model_service_quote_submit_success">
-        <observer name="order_placed"
+    <event name="sales_order_place_before">
+        <observer name="bayonet_antifraud_order_before_placed"
             instance="Bayonet\BayonetAntiFraud\Observer\OrderPlaced"/>
+    </event>
+    <event name="sales_order_save_commit_after">
+        <observer name="bayonet_order_update_state"
+            instance="Bayonet\BayonetAntiFraud\Observer\OrderUpdated"/>
     </event>
 </config>
