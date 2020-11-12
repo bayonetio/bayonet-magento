@@ -17,154 +17,97 @@ class DirectQuery
     }
 
     /**
-     * Performs a direct query to the database to retrieve the requested
-     * configuration value of the module
+     * Performs a custom query to the Magento database.
+     * Depending on the provided data, the query will be created and
+     * then executed to retrieve the requested value.
+     * If the where conditions include 'decision', it will be as not equals
+     * to 'decline', this to retrieve only quotes/orders that were actually
+     * processed and has the correct data; if a quote is declined in the
+     * consulting call, a row is inserted to the database but it does not
+     * have the necessary data for the update transaction call, in this way,
+     * avoiding all the 'declined' rows will then retrieve the correct row
      * 
      * @param string $table
      * @param string $requestedValue
-     * @param string $configPath
-     * @return int
+     * @param array $whereConditions
+     * 
+     * @return bool|string
      */
-    protected function configQuery($table, $requestedValue, $configPath)
+    public function customQuery($table, $requestedValue, $whereConditions)
     {
         $connection  = $this->resourceConnection->getConnection();
         $tableName = $connection->getTableName($table);
-        $query = $connection->select()->from($tableName, $requestedValue)->where('path = :path');
-        $path = 'bayonetantifraud_general/general/'.$configPath;
-        $bind = [':path' => (string)$path];
-        $result = $connection->fetchOne($query, $bind);
+        $select = $connection->select()
+            ->from(
+                ['o' =>  $tableName],
+                $requestedValue
+            );
+        
+        if ($whereConditions) {
+            foreach ($whereConditions as $key => $value) {
+                if ($key === 'decision') {
+                    $select = $select->where("o.$key != ?", $value);
+                } else {
+                    $select = $select->where("o.$key = ?", $value);
+                }
+            }
+        }
+        
+        $result = $connection->fetchOne($select);
 
         return $result;
     }
 
     /**
-     * Performs a direct query to the database to retrieve the requested
-     * value of an order
+     * Gets a requested configuration value from the database based on the
+     * provided configuration path
      * 
-     * @param string $table
-     * @param string $requestedValue
-     * @param string $orderId
+     * @param string $keyPath
+     * @return string|int
+     * 
+     */
+    public function getConfigValue($keyPath)
+    {
+        $whereConditions = [
+            'path' => $keyPath
+        ];
+
+        $configValue = $this->customQuery('core_config_data', 'value', $whereConditions);
+
+        return $configValue;
+    }
+
+    /**
+     * Gets the payment gateway of an order.
+     * This direct query is performed due to Magento changing the payment
+     * gateway of an order to 'substitution' whenever a gateway has been
+     * removed from the store.
+     * The payment gateway is still stored in the sales_order_payment table
+     * though, thus, it is necessary to perform a query to this table to
+     * retrieve the correct gateway when performing the backfill process
+     * 
+     * @param int $orderId
      * @return string
      */
-    public function orderQuery($table, $requestedValue, $orderId)
+    public function getPaymentGateway($orderId)
+    {
+        $paymentGateway = $this->customQuery('sales_order_payment', 'method', array('parent_id' => $orderId));
+
+        return $paymentGateway;
+    }
+
+    /**
+     * Gets the IDs of the orders already processed by Bayonet
+     * 
+     * @return array
+     */
+    public function getBayonetIds()
     {
         $connection  = $this->resourceConnection->getConnection();
-        $tableName = $connection->getTableName($table);
-        $query = $connection->select()->from($tableName, $requestedValue)->where('order_id = :orderId');
-        $bind = [':orderId' => $orderId];
-        $result = $connection->fetchOne($query, $bind);
+        $tableName = $connection->getTableName('bayonet_antifraud_orders');
+        $query = $connection->select('distinct')->from($tableName, 'order_id')->where('order_id is not null');
+        $result = $connection->fetchCol($query);
 
         return $result;
-    }
-
-    /**
-     * Performs a direct query to the database to retrieve the requested
-     * value of a customer
-     * 
-     * @param string $table
-     * @param string $requestedValue
-     * @param string $customerId
-     * @return string
-     */
-    protected function customerQuery($table, $requestedValue, $customerId)
-    {
-        $connection  = $this->resourceConnection->getConnection();
-        $tableName = $connection->getTableName($table);
-        $query = $connection->select()->from($tableName, $requestedValue)->where('customer_id = :customerId');
-        $bind = [':customerId' => $customerId];
-        $result = $connection->fetchOne($query, $bind);
-
-        return $result;
-    }
-    
-    /**
-     * Gets the current value of the enable configuration for the module
-     * 
-     * @return int
-     */
-    public function getEnabled()
-    {
-        $enabled = $this->configQuery('core_config_data', 'value', 'enable');
-
-        return intval($enabled);
-    }
-
-    /**
-     * Gets the current value for the API mode
-     * 
-     * @return int
-     */
-    public function getApiMode()
-    {
-        $apiMode = $this->configQuery('core_config_data', 'value', 'api_mode');
-
-        return intval($apiMode);
-    }
-
-    /**
-     * Gets the current value for the specified API key
-     * 
-     * @return string
-     */
-    public function getApiKey($keyPath)
-    {
-        $apiKey = $this->configQuery('core_config_data', 'value', $keyPath);
-
-        return $apiKey;
-    }
-
-    /**
-     * Gets the Bayonet Tracking ID of an order in the Bayonet Orders table (if exists)
-     * 
-     * @return string
-     */
-    public function getTrackingId($orderId)
-    {
-        $trackingId = $this->orderQuery('bayonet_antifraud_orders', 'bayonet_tracking_id', $orderId);
-
-        return $trackingId;
-    }
-
-    /**
-     * Gets the API response of an order in the Bayonet Orders table (if exists)
-     * 
-     * @return string
-     */
-    public function getApiResponse($orderId)
-    {
-        $apiResponse = $this->orderQuery('bayonet_antifraud_orders', 'consulting_api_response', $orderId);
-
-        return $apiResponse;
-    }
-
-    /**
-     * Gets the Decision of an order in the Bayonet Orders table (if exists)
-     * 
-     * @return string
-     */
-    public function getDecision($orderId)
-    {
-        $decision = $this->orderQuery('bayonet_antifraud_orders', 'decision', $orderId);
-
-        return $decision;
-    }
-
-    /**
-     * Gets the triggered rules of an order in the Bayonet Orders table (if exist)
-     * 
-     * @return string
-     */
-    public function getRules($orderId)
-    {
-        $rules = $this->orderQuery('bayonet_antifraud_orders', 'triggered_rules', $orderId);
-
-        return $rules;
-    }
-
-    public function getFingerprintToken($customerId)
-    {
-        $finrgerprintToken = $this->customerQuery('bayonet_antifraud_fingerprint', 'fingerprint_token', $customerId);
-
-        return $finrgerprintToken;
     }
 }
