@@ -2,6 +2,7 @@
 
 namespace Bayonet\BayonetAntiFraud\Helper\Order;
 
+use \Magento\Quote\Api\CartRepositoryInterface;
 use \Bayonet\BayonetAntiFraud\Helper\DirectQuery;
 use \Bayonet\BayonetAntiFraud\Model\BayonetFingerprintFactory;
 
@@ -14,13 +15,16 @@ class OrderHelper
     protected $order;
     protected $directQuery;
     protected $bayonetFingerprintFactory;
+    protected $quoteRepository;
 
     public function __construct(
         DirectQuery $directQuery,
-        BayonetFingerprintFactory $bayonetFingerprintFactory
+        BayonetFingerprintFactory $bayonetFingerprintFactory,
+        CartRepositoryInterface $quoteRepository
     ) {
         $this->directQuery = $directQuery;
         $this->bayonetFingerprintFactory = $bayonetFingerprintFactory;
+        $this->quoteRepository = $quoteRepository;
     }
 
     /**
@@ -55,22 +59,29 @@ class OrderHelper
     {
         $requestBody = [
             'channel' => 'ecommerce',
-            'order_id' => $this->getOrder()->getId(),
+            'order_id' => $this->getOrder()->getQuoteId(),
             'consumer_internal_id' => $this->getOrder()->getCustomerId(),
             'consumer_name' => $this->getCustomerName(),
             'email' => $this->getOrder()->getCustomerEmail(),
-            'telephone' => $this->getOrder()->getBillingAddress()->getTelephone(),
+            'telephone' => $this->getTelephone(),
             'billing_address' => $this->getBillingAddress(),
             'shipping_address' => $this->getShippingAddress(),
             'products' => $this->getProducts(),
             'currency_code' => $this->getOrder()->getOrderCurrencyCode(),
             'transaction_amount' => number_format((float)$this->getOrder()->getGrandTotal(), 1, '.', ''),
-            'transaction_time' => strtotime($this->getOrder()->getCreatedAt())
+            'transaction_time' => $this->getTransactionTime($requestType),
         ];
+
+        $paymentDetails = $this->getPaymentDetails($this->getOrder()->getPayment());
+
+        foreach ($paymentDetails as $key => $value) {
+            $requestBody[$key] = $value;
+        }
 
         if ($requestType === 'consulting') {
             $bayonetFingerprint = $this->bayonetFingerprintFactory->create();
-            $fingerprintToken = $bayonetFingerprint->load($this->getOrder()->getCustomerId(), 'customer_id');            if (!empty($fingerprintToken->getData())) {
+            $fingerprintToken = $bayonetFingerprint->load($this->getOrder()->getCustomerId(), 'customer_id');
+            if (!empty($fingerprintToken->getData())) {
                 $requestBody['bayonet_fingerprint_token'] = $fingerprintToken->getData('fingerprint_token');
                 $resetTokenData = array(
                     'fingerprint_id' => $fingerprintToken->getData('fingerprint_id'),
@@ -81,6 +92,11 @@ class OrderHelper
             }
         }
 
+        if ($requestType === 'backfill') {
+            $transactionStatus = $this->getTransactionStatus();
+            $requestBody['transaction_status'] = $transactionStatus;
+        }
+
         return $requestBody;
     }
 
@@ -89,7 +105,7 @@ class OrderHelper
      * 
      * @return string
      */
-    public function getCustomerName()
+    protected function getCustomerName()
     {
         return $this->getOrder()->getCustomerFirstname().' '.$this->getOrder()->getCustomerLastname();
     }
@@ -98,9 +114,10 @@ class OrderHelper
      * Generates an address in the required format for the Bayonet API request using
      * the provided address object
      * 
+     * @param array $address
      * @return array
      */
-    public function generateAddress($address)
+    protected function generateAddress($address)
     {
         if (!$address) {
             return null;
@@ -121,26 +138,40 @@ class OrderHelper
     /**
      * Gets the billing address of an order object
      */
-    public function getBillingAddress()
+    protected function getBillingAddress()
     {
         $billingAddress = $this->getOrder()->getBillingAddress();
+
         return $this->generateAddress($billingAddress);
     }
 
     /**
      * Gets the shipping address of an order object
      */
-    public function getShippingAddress()
+    protected function getShippingAddress()
     {
         $shippingAddress = $this->getOrder()->getShippingAddress();
+
         return $this->generateAddress($shippingAddress);
+    }
+
+    /**
+     * Gets the telephone (if exists) out of the billing address,
+     * it also removes any special characters from the string
+     */
+    protected function getTelephone()
+    {
+        $telephoneData = $this->getOrder()->getBillingAddress()->getTelephone();
+        $telephoneForRequest = $telephoneData !== null ? preg_replace("/[^0-9]/", "", $telephoneData) : null;
+
+        return $telephoneForRequest;
     }
 
     /**
      * Gets the products of an order object and adds them to an array.
      * Each product contains its ID, name & price
      */
-    public function getProducts()
+    protected function getProducts()
     {
         $orderItems = $this->getOrder()->getAllItems();
         $products_list = array();
@@ -157,8 +188,219 @@ class OrderHelper
     }
 
     /**
+     * Gets the payment gateway code of an order/quote
+     * 
+     * @param array $paymentData
+     * @return string
+     */
+    protected function getPaymentGateway($paymentData)
+    {
+        $paymentGateway = $paymentData->getMethodInstance()->getCode();
+
+        return $paymentGateway;
+    }
+
+    /**
+     * Gets the payment details of an order/quote.
+     * It will first check if the method is offline or paypal, if none
+     * of this is true, it will call the definePaymentDetails function
+     * to try and map the payment details
+     * 
+     * @param array $paymentData
+     * @return array
+     */
+    protected function getPaymentDetails($paymentData)
+    {
+        $paymentDetails = [];
+
+        if ($paymentData->getMethodInstance()->isOffline()) {
+            $paymentDetails['payment_method'] = 'offline';
+            $paymentDetails['payment_gateway'] = $this->getPaymentGateway($paymentData);
+        } else if (strpos(strtolower($this->getPaymentGateway($paymentData)), 'paypal') !== false) {
+            $paymentDetails['payment_method'] = 'paypal';
+            $paymentDetails['payment_gateway'] = 'paypal';
+        } else {
+            $paymentDetails = $this->definePaymentDetails($paymentData);
+        }
+
+        return $paymentDetails;
+    }
+
+    /**
+     * Defines the payment details to decide how to map them.
+     * It first checks if the payment gateway is a gateway that the
+     * module handles and then calls either the checkForCard or
+     * mapPaymentDetails function depending on whether the gateway
+     * accepts cards or not
+     * 
+     * @param array $paymentData
+     * @return array
+     */
+    private function definePaymentDetails($paymentData)
+    {
+        $paymentDetails = [];
+        $paymentGateway = $this->getPaymentGateway($paymentData);
+
+        // if the payment gateway has been removed from the store
+        if (strpos($paymentGateway, 'substitution') !== false) {
+            $paymentGateway = $this->directQuery->getPaymentGateway($this->getOrder()->getId());
+        }
+
+        if (strpos($paymentGateway, 'conekta') !== false) {
+            $paymentDetails = $this->checkForCard($paymentGateway, 'conekta');
+        } else if (strpos($paymentGateway, 'openpay') !== false) {
+            $paymentDetails = $this->checkForCard($paymentGateway, 'openpay');
+        } else if (strpos($paymentGateway, 'braintree') !== false) {
+            $paymentDetails = $this->mapPaymentDetails('braintree');
+        } else if (strpos($paymentGateway, 'stripe') !== false) {
+            $paymentDetails = $this->checkForCard($paymentGateway, 'stripe');
+        } else if (strpos($paymentGateway, 'mercadopago') !== false) {
+            $paymentDetails = $this->mapPaymentDetails('mercadopago');
+        }
+
+        return $paymentDetails;
+    }
+
+    /**
+     * Checks if the payment method of the provided payment gateway
+     * is using card to then call the mapPaymentDetails and get the
+     * corresponding payment details
+     * 
+     * @param string $paymentGatewayCode
+     * @param string $gateway
+     * @return array
+     */
+    private function checkForCard($paymentGatewayCode, $gateway)
+    {
+        $paymentDetails = [];
+        $ccCodes = ['cc', 'card', 'tarjeta'];
+
+        if (strpos($paymentGatewayCode, 'stripe') !== false) {
+            if (array_key_exists('save_card', $this->getOrder()->getPayment()->getAdditionalInformation())) {
+                $paymentDetails = $this->mapPaymentDetails($gateway);
+            } else if (strpos($paymentGatewayCode, 'oxxo') !== false) {
+                $paymentDetails['payment_method'] = 'offline';
+                $paymentDetails['payment_gateway'] = $paymentGatewayCode;
+            }
+        } else {
+            foreach ($ccCodes as $code) {
+                if (strpos(strtolower($paymentGatewayCode), $code) !== false) {
+                    $paymentDetails = $this->mapPaymentDetails($gateway);
+                    break;
+                }
+            }
+        }
+
+        return $paymentDetails;
+    }
+
+    /**
+     * Maps the payment details of an order/quote depending on the
+     * provided gateway.
+     * Only conekta stores both the bin & last 4 digits of the cards, thus,
+     * it is the only one having the 'card_bin' & 'card_last_4' details;
+     * openpay, braintree, stripe and mercadopago will be handled as tokenized card
+     * 
+     * @param string $paymentGateway
+     * @return array
+     */
+    private function mapPaymentDetails($paymentGateway)
+    {
+        $paymentDetails = [];
+
+        switch ($paymentGateway) {
+            case 'conekta':
+                $paymentDetails['payment_gateway'] = 'conekta';
+                $paymentDetails['payment_method'] = 'card';
+                $paymentDetails['card_bin'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_bin'];
+                $paymentDetails['card_last_4'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_last_4'];
+            break;
+            case 'openpay':
+                $paymentDetails['payment_gateway'] = 'openpay';
+                $paymentDetails['payment_method'] = 'tokenized_card';
+            break;
+            case 'braintree':
+                $paymentDetails['payment_gateway'] = 'braintree';
+                $paymentDetails['payment_method'] = 'tokenized_card';
+            break;
+            case 'stripe':
+                $paymentDetails['payment_gateway'] = 'stripe';
+                $paymentDetails['payment_method'] = 'tokenized_card';
+            break;
+            case 'mercadopago':
+                $paymentDetails['payment_gateway'] = 'mercadopago';
+                $paymentDetails['payment_method'] = 'tokenized_card';
+            break;
+        }
+
+        return $paymentDetails;
+    }
+
+    /**
+     * Gets the status of an order. This is done by mapping the
+     * order's state to a valid transaction status for the API
+     * 
+     * @return string
+     */
+    public function getTransactionStatus()
+    {
+        $orderState = $this->getOrder()->getState();
+        $successStates = ['processing', 'complete', 'closed'];
+        $pendingStates = ['new', 'pending', 'pending_payment', 'holded'];
+
+        foreach ($pendingStates as $state) {
+            if ($orderState === $state) {
+                return 'pending';
+            }
+        }
+
+        foreach ($successStates as $state) {
+            if ($orderState === $state) {
+                return 'success';
+            }
+        }
+
+        if ($orderState === 'canceled') {
+            return 'cancelled';
+        }
+
+        if ($orderState === 'payment_review') {
+            $orderStatus = $this->getOrder()->getStatus();
+            if (strpos($orderStatus, 'fraud') !== false) {
+                return 'suspected_fraud';
+            }
+
+            return 'pending';
+        }
+    }
+
+    /**
+     * Gets the transaction time of an order.
+     * The time retrieved will depend on the request type, if the
+     * generated request body is for a backfill order, then it will
+     * retrieve the 'created_at' value, meanwhile, if the request body is
+     * for a consulting request, it will retrieve the 'updated_at' value.
+     * The retrieved date will be translated to a Unix timestamp
+     * 
+     * @param string $requestType
+     * @return string
+     */
+    protected function getTransactionTime($requestType)
+    {
+        if ($requestType === 'consulting') {
+            $quote = $this->quoteRepository->get($this->getOrder()->getQuoteId());
+            return strtotime($quote->getData('updated_at'));
+        } else if ($requestType === 'backfill') {
+            return strtotime($this->getOrder()->getData('created_at'));
+        }
+    }
+
+    /**
      * Converts the country codes to 3-letter ISO codes
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
+     * 
+     * @param string $country
+     * @return string
      */
     protected function convertCountryCode($country)
     {
@@ -418,5 +660,4 @@ class OrderHelper
 
         return $iso_code;
     }
-
 }
