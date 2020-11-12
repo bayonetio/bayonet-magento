@@ -10,6 +10,7 @@ use \Magento\Framework\Api\SearchCriteriaBuilder;
 use \Magento\Framework\Api\FilterBuilder;
 use \Magento\Framework\Api\Search\FilterGroupBuilder;
 use \Magento\Framework\Api\SortOrder;
+use \Magento\Framework\App\State;
 use \Bayonet\BayonetAntiFraud\Helper\RequestHelper;
 use \Bayonet\BayonetAntiFraud\Helper\GetData;
 use \Bayonet\BayonetAntiFraud\Helper\SetData;
@@ -33,6 +34,7 @@ class Backfill extends Command
     protected $bayonetBackfillFactory;
     protected $orderHelper;
     protected $directQuery;
+    protected $state;
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
@@ -45,7 +47,8 @@ class Backfill extends Command
         RequestHelper $requestHelper,
         BayonetBackfillFactory $bayonetBackfillFactory,
         OrderHelper $orderHelper,
-        DirectQuery $directQuery
+        DirectQuery $directQuery,
+        State $state
     ) {
         parent::__construct();
         $this->orderRepository = $orderRepository;
@@ -59,6 +62,7 @@ class Backfill extends Command
         $this->bayonetBackfillFactory = $bayonetBackfillFactory;
         $this->orderHelper = $orderHelper;
         $this->directQuery = $directQuery;
+        $this->state = $state;
     }
     
     protected function configure()
@@ -78,6 +82,7 @@ class Backfill extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->state->setAreaCode(\Magento\Framework\App\Area::AREA_ADMINHTML);
         $bayonetBackfill = $this->bayonetBackfillFactory->create();
         $backfillData = $bayonetBackfill->getCollection();
         $backfillStatus = 0;
@@ -124,7 +129,7 @@ class Backfill extends Command
             );
         }
         foreach ($orders as $order) {
-            if (intval($this->directQuery->getApiMode()) === 1) { // checks if the API mode has not been changed to sandbox
+            if (intval($this->directQuery->getConfigValue('bayonetantifraud_general/general/api_mode')) === 1) { // checks if the API mode has not been changed to sandbox
                 $requestBody = $this->prepareRequestBody($order);
                 $response = $this->requestHelper->feedbackHistorical($requestBody);
                 $dataToUpdate = array(
@@ -164,9 +169,21 @@ class Backfill extends Command
      */
     protected function getAllOrders($executionMode, $from, $to)
     {
-        $ordersSearcher;
+        $orderSearcher;
+        $bayonetOrders = $this->directQuery->getBayonetIds();
+        //$bayonetOrders = $this->directQuery->customQuery('bayonet_antifraud_orders', 'order_id', array());
 
         if ($executionMode === 1) { // if the process is being resumed (gets only remaining orders)
+            $filterNin = $this->filterBuilder
+                ->setField('entity_id')
+                ->setConditionType('nin')
+                ->setValue($bayonetOrders)
+                ->create();
+            
+            $filterGroupNin = $this->filterGroupBuilder
+                ->addFilter($filterNin)
+                ->create(); 
+            
             $filterFrom = $this->filterBuilder
                 ->setField('entity_id')
                 ->setConditionType('gt')
@@ -187,16 +204,27 @@ class Backfill extends Command
                 ->addFilter($filterTo)
                 ->create();
 
-            $ordersSearcher = $this->searchCriteriaBuilder
-                ->setFilterGroups([$filterGroupFrom, $filterGroupTo])
+            $orderSearcher = $this->searchCriteriaBuilder
+                ->setFilterGroups([$filterGroupNin, $filterGroupFrom, $filterGroupTo])
                 ->addSortOrder($this->sortOrder->setDirection('ASC')->setField('entity_id'))
                 ->create();
         } else { // if the process has been started for the first time (gets all orders)
-            $ordersSearcher = $this->searchCriteriaBuilder
+            $filterNin = $this->filterBuilder
+                ->setField('entity_id')
+                ->setConditionType('nin')
+                ->setValue($bayonetOrders)
+                ->create();
+            
+            $filterGroupNin = $this->filterGroupBuilder
+                ->addFilter($filterNin)
+                ->create(); 
+
+            $orderSearcher = $this->searchCriteriaBuilder
+                ->setFilterGroups([$filterGroupNin])
                 ->addSortOrder($this->sortOrder->setDirection('ASC')->setField('entity_id'))
                 ->create();
         }
-        $ordersResult = $this->orderRepository->getList($ordersSearcher);
+        $ordersResult = $this->orderRepository->getList($orderSearcher);
 
         return $ordersResult;
     }
