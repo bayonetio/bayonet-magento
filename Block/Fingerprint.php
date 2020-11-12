@@ -43,7 +43,7 @@ class Fingerprint extends Template
      */
     public function getEnabled()
     {
-        return intval($this->directQuery->getEnabled());
+        return intval($this->directQuery->customQuery('core_config_data', 'value', array('path' => 'bayonetantifraud_general/general/enable')));
     }
 
     /**
@@ -55,8 +55,8 @@ class Fingerprint extends Template
      */
     public function getApiKey()
     {
-        $apiMode = intval($this->directQuery->getApiMode());
-        $apiKey = $apiMode === 1 ? $this->directQuery->getApiKey('js_live_key') : $this->directQuery->getApiKey('js_sandbox_key');
+        $apiMode = intval($this->directQuery->customQuery('core_config_data', 'value', array('path' => 'bayonetantifraud_general/general/api_mode')));
+        $apiKey = $apiMode === 1 ? $this->directQuery->customQuery('core_config_data', 'value', array('path' => 'bayonetantifraud_general/general/js_live_key')) : $this->directQuery->customQuery('core_config_data', 'value', array('path' => 'bayonetantifraud_general/general/js_sandbox_key'));
         
         return $apiKey;
     }
