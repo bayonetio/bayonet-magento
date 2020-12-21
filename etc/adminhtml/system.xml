@@ -9,37 +9,62 @@
             <label>General Configuration</label>
             <tab>bayonet</tab>
             <resource>Bayonet_BayonetAntiFraud::bayonetantifraud_config</resource>
-            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="general" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
-                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <comment>
+                <![CDATA[
+                <b>IMPORTANT - READ THE MANUAL</b>
+                <br><br>
+                Don't forget to read this module's manual before using it. Reading the manual will help you a lot in understanding how to configure the module and how it works, 
+                in this way, navigating throughout its features will be a lot easier for you.
+                <br><br>
+                Enabling this module's features will require for you to enter your API keys, 
+                to obtain them you need to log into <a href="https://bayonet.io/login" target="_blank" rel="noopener noreferrer">Bayonet's Console</a> with your Bayonet credentials, 
+                once you are logged in, go to the <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer">Setup section</a>, where you can get them or generate them if you haven\'t done that. 
+                If you haven't received your Bayonet credentials yet, please send an email to <a href="mailto:contacto@bayonet.io">contacto@bayonet.io</a>
+                with your information to provide you with them.
+                <br><br>
+                In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href="https://bayonet.io/login" target="_blank" rel="noopener noreferrer">Bayonet's Console</a>. 
+                This is located in the <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer">Setup section</a>, the same place where you get your API keys.
+                <br><br>
+                If you need any support regarding this module, you can either send a mail to <a href="mailto:soporte@bayonet.io">soporte@bayonet.io</a> or contact us via Intercom on our <a href="https://bayonet.io/" target="_blank" rel="noopener noreferrer">Website</a>.
+                <br><br>]]>
+                </comment>
+                <field id="enable" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Module Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>When disabled, the module will not process any orders</comment>
+                    <comment>When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already</comment>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\EnableValidation</backend_model>
                 </field>
-                <field id="api_mode" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="api_mode" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Production Mode Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live API keys have been saved already</comment>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\ApiModeValidation</backend_model>
                 </field>
-                <field id="bayonet_sandbox_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="api_version" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Version</label>
+                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\ApiVersionValidation</backend_model>
+                    <comment>The current version of the API. This must not be modified unless asked by the developer</comment>
+                </field>
+                <field id="bayonet_sandbox_key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Bayonet Sandbox Key</label>
-                    <comment>The sandbox API key for Bayonet</comment>
+                    <comment><![CDATA[The sandbox API key for Bayonet. <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer"> Get the key</a>]]></comment>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
-                <field id="js_sandbox_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="js_sandbox_key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Device Fingerprint Sandbox Key</label>
-                    <comment>The sandbox API key for the Device Fingerprint</comment>
+                    <comment><![CDATA[The sandbox API key for the Device Fingerprint. <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer"> Get the key</a>]]></comment>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
-                <field id="bayonet_live_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="bayonet_live_key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Bayonet Live Key</label>
-                    <comment>The live API key for Bayonet</comment>
+                    <comment><![CDATA[The live API key for Bayonet. <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer"> Get the key</a>]]></comment>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
-                <field id="js_live_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="js_live_key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Device Fingerprint Live Key</label>
-                    <comment>The live API key for the Device Fingerprint</comment>
+                    <comment><![CDATA[The live API key for the Device Fingerprint. <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer"> Get the key</a>]]></comment>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
             </group>
