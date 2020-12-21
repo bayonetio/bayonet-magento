@@ -19,7 +19,7 @@ use \Bayonet\BayonetAntiFraud\Helper\GetData;
 class KeyValidation extends \Magento\Framework\App\Config\Value
 {
     protected $requestHelper;
-    protected $dataHelper;
+    protected $getHelper;
 
     public function __construct(
         Context $context,
@@ -30,8 +30,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
         AbstractDb $resourceCollection = null,
         RequestHelper $requestHelper,
         GetData $getHelper
-    )
-    {
+    ) {
         parent::__construct(
             $context,
             $registry,
@@ -65,11 +64,11 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 // if the response from the API was successful but the code is not
                 // the one expected, then the API key is not valid and an excepction
                 // is thrown, otherwise, the process of saving continues.
-                if (isset($response->reason_code) && intval($response->reason_code) !== 101) {
+                if (isset($response->reason_code) && (int)$response->reason_code !== 101) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         'Invalid '.$label.'. Please check your key and try again'
                     ));
-                } elseif (isset($response->reason_code) && intval($response->reason_code) === 101) {
+                } elseif (isset($response->reason_code) && (int)$response->reason_code === 101) {
                     $this->setValue(($this->getValue()));
                     parent::beforeSave();
                 } elseif (!isset($response->reason_code)) {
@@ -77,15 +76,15 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                         'An error ocurred while validating the '.$label.'. Please try again'
                     ));
                 }
-            } else if (strpos($label, 'Fingerprint') !== false) {
+            } elseif (strpos($label, 'Fingerprint') !== false) {
                 $requestBody['auth']['jsKey'] = $apiKey;
                 $response = $this->requestHelper->deviceFingerprint($requestBody);
 
-                if (isset($response->reasonCode) && intval($response->reasonCode) !== 51) {
+                if (isset($response->reasonCode) && (int)$response->reasonCode !== 51) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         'Invalid '.$label.'. Please check your key and try again'
                     ));
-                } elseif (isset($response->reasonCode) && intval($response->reasonCode) === 51) {
+                } elseif (isset($response->reasonCode) && (int)$response->reasonCode === 51) {
                     $this->setValue(($this->getValue()));
                     parent::beforeSave();
                 } elseif (!isset($response->reasonCode)) {
@@ -108,7 +107,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
         } elseif (empty($apiKey) && strpos($label, 'Live') !== false) {
             $currentApiMode = $this->getHelper->getConfigValue('api_mode');
 
-            if (intval($currentApiMode) === 1) { // to avoid saving an empty live key when the current API mode is set to live
+            if ((int)$currentApiMode === 1) { // to avoid saving an empty live key when the current API mode is set to live
                 throw new \Magento\Framework\Exception\ValidatorException(__(
                     'Cannot save an empty live (production) API key when the live (production) mode is enabled'
                 ));

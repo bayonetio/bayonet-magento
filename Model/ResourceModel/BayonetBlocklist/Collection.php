@@ -19,8 +19,8 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(
-            'Bayonet\BayonetAntiFraud\Model\BayonetBlocklist',
-            'Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist'
+            \Bayonet\BayonetAntiFraud\Model\BayonetBlocklist::class,
+            \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist::class
         );
     }
 

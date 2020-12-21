@@ -6,36 +6,30 @@
 
 <div class="fieldset-wrapper order-information">
     <div class="fieldset-wrapper-title">
-        <span class="title"><?php /* @escapeNotVerified */
-            echo __('Information for Bayonet Anti-Fraud') ?></span>
+        <span class="title"><?=$block->escapeHtml(__('Information for Bayonet Anti-Fraud')) ?></span>
     </div>
     <table class="admin__table-secondary">
         <tbody>
-        <?php echo $block->getChildHtml(); ?>
+            <?= $block->getChildHtml(); ?>
         <tr>
-            <th><?php /* @escapeNotVerified */
-                echo __('Order ID:') ?></th>
-            <td><?php echo $block->getOrderIncrementId(); ?></td>
+            <th><?= $block->escapeHtml('Order ID:') ?></th>
+            <td><?= $block->escapeHtml($block->getOrderIncrementId()); ?></td>
         </tr>
         <tr>
-            <th><?php /* @escapeNotVerified */
-                echo __('Bayonet Tracking ID:') ?></th>
-            <td><?php echo $block->getTrackingId(); ?></td>
+            <th><?= $block->escapeHtml(__('Bayonet Tracking ID:')) ?></th>
+            <td><?= $block->escapeHtml($block->getTrackingId()); ?></td>
         </tr>
         <tr>
-            <th><?php /* @escapeNotVerified */
-                echo __('API Response:') ?></th>
-            <td><?php echo $block->getApiResponse(); ?></td>
+            <th><?= $block->escapeHtml(__('API Response:')) ?></th>
+            <td><?= $block->escapeHtml($block->getApiResponse()); ?></td>
         </tr>
         <tr>
-            <th><?php /* @escapeNotVerified */
-                echo __('Decision:') ?></th>
-            <td><?php echo $block->getDecision(); ?></td>
+            <th><?= $block->escapeHtml(__('Decision:')) ?></th>
+            <td><?= $block->escapeHtml($block->getDecision()); ?></td>
         </tr>
         <tr>
-            <th><?php /* @escapeNotVerified */
-                echo __('Triggered Rules:') ?></th>
-            <td class="bayonet_order_info"><?php echo $block->getRules(); ?></td>
+            <th><?= $block->escapeHtml(__('Triggered Rules:')) ?></th>
+            <td class="bayonet_order_info"><?= $block->escapeHtml($block->getRules()); ?></td>
         </tr>
         </tbody>
     </table>

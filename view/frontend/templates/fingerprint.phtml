@@ -5,10 +5,10 @@
         'domReady!',
     ], function($){
         function getResponse(response) {
-            var customerId = "<?php echo $block->getCustomerId() ?>";
+            var customerId = "<?= (string)$block->getCustomerId() ?>";
             $.ajax({
                 method: "POST",
-                url: "<?php /* @escapeNotVerified */ echo $block->getAjaxUrl() ?>",
+                url: "<?= $block->escapeUrl($block->getAjaxUrl()) ?>",
                 dataType: "json",
                 data: {
                     form_key: window.FORM_KEY,
@@ -19,8 +19,8 @@
         }
     
         $(document).ready(function() {
-            var moduleEnabled = "<?php echo $block->getEnabled() ?>";
-            var isCustomerLoggedIn = "<?php echo $block->getCustomerIsLoggedIn() ?>"
+            var moduleEnabled = "<?= (int)$block->getEnabled() ?>";
+            var isCustomerLoggedIn = "<?= (int)$block->getCustomerIsLoggedIn() ?>"
             if (parseInt(moduleEnabled) === 1) {
                 if (isCustomerLoggedIn) {
                     $.getScript('https://cdn.bayonet.io/fingerprinting-2.0.min.js', function() {
@@ -30,7 +30,7 @@
             }
     
             function initBayonet() {
-                var apiKey = "<?php echo $block->getApiKey() ?>";
+                var apiKey = "<?= (string)$block->getApiKey() ?>";
                 if (apiKey) {
                     _bayonet.init({
                         js_key: apiKey,

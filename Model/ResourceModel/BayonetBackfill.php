@@ -8,8 +8,8 @@ use \Magento\Framework\Model\ResourceModel\Db\Context;
 /**
  * Defines the Resource Model for the Backfill table
  */
-class BayonetBackfill extends AbstractDb {
-
+class BayonetBackfill extends AbstractDb
+{
     protected $_isPkAutoIncrement = false; // if not added, no rows can be inserted
 
     public function __construct(

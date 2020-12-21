@@ -11,8 +11,8 @@ use \Magento\Framework\Data\Collection\AbstractDb;
 /**
  * Defines the Model for the Bayonet Fingerprint table
  */
-class BayonetFingerprint extends AbstractModel {
-
+class BayonetFingerprint extends AbstractModel
+{
     const CACHE_TAG = 'bayonet_antifraud_fingerprint';
     protected $_cacheTag = 'bayonet_antifraud_fingerprint';
     protected $_eventPrefix = 'bayonet_antifraud_fingerprint';
@@ -32,7 +32,7 @@ class BayonetFingerprint extends AbstractModel {
      */
     protected function _construct()
     {
-        $this->_init('Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetFingerprint');
+        $this->_init(\Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetFingerprint::class);
     }
 
     /**

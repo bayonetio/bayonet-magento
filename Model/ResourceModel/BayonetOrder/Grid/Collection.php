@@ -18,11 +18,10 @@ class Collection extends \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetOr
         $eventPrefix,
         $eventObject,
         $resourceModel,
-        $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+        $model = \Magento\Framework\View\Element\UiComponent\DataProvider\Document::class,
         \Magento\Framework\DB\Adapter\AdapterInterface $connection = null,
         \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
-    )
-    {
+    ) {
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
         $this->_eventPrefix = $eventPrefix;
         $this->_eventObject = $eventObject;
@@ -46,7 +45,6 @@ class Collection extends \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetOr
     {
         $this->_aggregations = $aggregations;
     }
-
 
     /**
      * Retrieve all ids for collection

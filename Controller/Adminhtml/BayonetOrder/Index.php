@@ -12,22 +12,21 @@ use \Magento\Framework\View\Result\PageFactory;
  */
 class Index extends Action
 {
-	protected $resultPageFactory = false;
+    protected $resultPageFactory = false;
 
-	public function __construct(
-		Context $context,
-		PageFactory $resultPageFactory
-	)
-	{
-		parent::__construct($context);
-		$this->resultPageFactory = $resultPageFactory;
-	}
-
-	public function execute()
-	{
-		$resultPage = $this->resultPageFactory->create();
-		$resultPage->getConfig()->getTitle()->prepend((__('Orders Processed by Bayonet Anti-Fraud')));
-
-		return $resultPage;
-	}
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+    }
+    
+    public function execute()
+    {
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->getConfig()->getTitle()->prepend((__('Orders Processed by Bayonet Anti-Fraud')));
+        
+        return $resultPage;
+    }
 }

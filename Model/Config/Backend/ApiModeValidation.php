@@ -17,7 +17,7 @@ use \Bayonet\BayonetAntiFraud\Helper\GetData;
  */
 class ApiModeValidation extends \Magento\Framework\App\Config\Value
 {
-    protected $dataHelper;
+    protected $getHelper;
 
     public function __construct(
         Context $context,
@@ -27,8 +27,7 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         GetData $getHelper
-    )
-    {
+    ) {
         parent::__construct(
             $context,
             $registry,
@@ -45,12 +44,13 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
      * core_config_data before updating the API mode if the desired mode is the
      * live mode
      */
-    public function beforeSave() {
+    public function beforeSave()
+    {
         $apiMode = $this->getValue();
         $bayoLiveKey = $this->getHelper->getConfigValue('bayonet_live_key');
         $jsLiveKey = $this->getHelper->getConfigValue('js_live_key');
 
-        if (1 === intval($apiMode) && (empty($bayoLiveKey) || empty($jsLiveKey))) {
+        if (1 === (int)$apiMode && (empty($bayoLiveKey) || empty($jsLiveKey))) {
             throw new \Magento\Framework\Exception\ValidatorException(__(
                 'Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first.'
             ));

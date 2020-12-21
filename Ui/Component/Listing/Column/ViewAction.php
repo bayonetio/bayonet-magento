@@ -29,7 +29,7 @@ class ViewAction extends Column
      * Prepares the data source and adds the corresponding action in a column
      * inside the admin grid. The action will redirect the merchant to the
      * sales order view
-     * 
+     *
      * @param array $dataSource
      */
     public function prepareDataSource(array $dataSource)

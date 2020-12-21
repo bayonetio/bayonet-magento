@@ -16,26 +16,25 @@ class Index extends Action
     protected $resultJsonFactory;
     protected $bayonetFingerprintFactory;
 
-	public function __construct(
-		Context $context,
+    public function __construct(
+        Context $context,
         JsonFactory $resultJsonFactory,
         BayonetFingerprintFactory $bayonetFingerprintFactory
-	)
-	{
+    ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->bayonetFingerprintFactory = $bayonetFingerprintFactory;
-	}
+    }
 
     /**
      * Executes the corresponding validations to add the generated fingerprint
      * token to a customer, checking if a new row must be added to the table,
      * or just update an existing one
-     * 
+     *
      * @return json
      */
-	public function execute()
-	{
+    public function execute()
+    {
         $post = $this->getRequest()->getPost();
         $bayonetFingerprint = $this->bayonetFingerprintFactory->create();
         $currentToken = $bayonetFingerprint->load($post['customer'], 'customer_id');
@@ -44,15 +43,15 @@ class Index extends Action
             $data = null;
 
             if (empty($currentToken->getData())) {
-                $data = array(
+                $data = [
                     'customer_id' => $post['customer'],
                     'fingerprint_token' => $post['fingerprint']
-                );
+                ];
             } else {
-                $data = array(
+                $data = [
                     'fingerprint_id' => $currentToken->getData('fingerprint_id'),
                     'fingerprint_token' => $post['fingerprint']
-                );
+                ];
             }
             $bayonetFingerprint->setData($data);
             $bayonetFingerprint->save();
@@ -65,5 +64,5 @@ class Index extends Action
         ];
 
         return $result->setData($resultData);
-	}
+    }
 }

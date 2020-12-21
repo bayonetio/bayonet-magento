@@ -10,7 +10,6 @@ use \Bayonet\BayonetAntiFraud\Model\BayonetBlocklistFactory;
 use \Bayonet\BayonetAntiFraud\Helper\Order\OrderHelper;
 use \Bayonet\BayonetAntiFraud\Helper\DirectQuery;
 
-
 /**
  * Observer class for the order placement
  */
@@ -48,7 +47,7 @@ class OrderPlaced implements ObserverInterface
      * orders table with the corresponding data
      * The function will also add the customer to the blocklist table in case
      * they haven't been added previously
-     * 
+     *
      * @param \Magento\Framework\Event\Observer $observer
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -60,11 +59,11 @@ class OrderPlaced implements ObserverInterface
         $sandboxKey = $this->getHelper->getConfigValue('bayonet_sandbox_key');
         $liveKey = $this->getHelper->getConfigValue('bayonet_live_key');
         
-        if (!$moduleEnabled || intval($moduleEnabled) === 0) {
+        if (!$moduleEnabled || (int)$moduleEnabled === 0) {
             return;
         }
         
-        if ((!$sandboxKey && intval($apiMode) === 0) || (!$liveKey && intval($apiMode) === 1)) {
+        if ((!$sandboxKey && (int)$apiMode === 0) || (!$liveKey && (int)$apiMode === 1)) {
             return;
         }
         
@@ -75,31 +74,36 @@ class OrderPlaced implements ObserverInterface
         try {
             $this->orderHelper->setOrder($order);
             $requestBody = $this->orderHelper->generateRequestBody('consulting');
-            $requestBody['auth']['api_key'] = intval($apiMode) === 1 ? $liveKey : $sandboxKey;
+            $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
             $response = $this->requestHelper->consulting($requestBody);
             $bayonetOrder = $this->bayonetOrderFactory->create();
-            $orderData = array(
-                'quote_id' => $requestBody['order_id']
-            );
+            $orderData = [
+                'quote_id' => $requestBody['order_id'],
+                'api_mode' => $apiMode
+            ];
 
             if ($response) {
-                $orderData['bayonet_tracking_id'] = intval($response->reason_code) === 0 ? $response->bayonet_tracking_id: null;
-                $orderData['consulting_api'] = intval($response->reason_code) === 0 ? 1 : 0;
+                $orderData['bayonet_tracking_id'] = (int)$response->reason_code === 0 ?
+                    $response->bayonet_tracking_id :
+                    null;
+                $orderData['consulting_api'] = (int)$response->reason_code === 0 ? 1 : 0;
                 $orderData['consulting_api_response'] = json_encode(
-                    array(
+                    [
                         'reason_code' => $response->reason_code,
                         'reason_message' => $response->reason_message,
-                    )
+                    ]
                 );
-                $orderData['decision'] = intval($response->reason_code) === 0 ? $response->decision : null;
-                $orderData['triggered_rules'] = intval($response->reason_code) === 0 ? $this->getTriggeredRules($response) : null;
+                $orderData['decision'] = (int)$response->reason_code === 0 ? $response->decision : null;
+                $orderData['triggered_rules'] = (int)$response->reason_code === 0 ?
+                    $this->getTriggeredRules($response) :
+                    null;
                 $orderData['executed'] = 1;
                 $bayonetOrder->setData($orderData);
                 $bayonetOrder->save();
 
-                if (array_key_exists('decision', $response) && $response->decision === 'decline') {
+                if (isset($response['decision']) && $response->decision === 'decline') {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
-                            "There was an error processing your order. Please try again later"
+                        "There was an error processing your order. Please try again later"
                     ));
                 }
             } else {
@@ -109,7 +113,7 @@ class OrderPlaced implements ObserverInterface
                 $bayonetOrder->save();
             }
 
-            if ($response && intval($requestBody['consumer_internal_id'])) {
+            if ($response && (int)$requestBody['consumer_internal_id']) {
                 $this->addBlocklistRows($requestBody['consumer_internal_id'], $requestBody['email']);
             }
         } catch (Exception $e) {
@@ -120,7 +124,7 @@ class OrderPlaced implements ObserverInterface
     /**
      * Gets the triggered rules of a successful consulting request to
      * Bayonet's API
-     * 
+     *
      * @param array $response
      * @return string
      */
@@ -147,7 +151,7 @@ class OrderPlaced implements ObserverInterface
      * Adds a customer to the Bayonet's blocklist table in the database.
      * It performs a validation before trying to add them, this to make
      * sure the customer is not present in the table yet
-     * 
+     *
      * @param string $customerId
      * @param string $email
      */
@@ -157,11 +161,11 @@ class OrderPlaced implements ObserverInterface
         $blocklistRow = $bayonetBlocklist->load($customerId, 'customer_id');
 
         if (empty($blocklistRow->getData())) {
-            $blocklistData = array(
+            $blocklistData = [
                 'customer_id' => $customerId,
                 'email' => $email,
                 'api_mode' => 0
-            );
+            ];
 
             $bayonetBlocklist->setData($blocklistData);
             $bayonetBlocklist->save();

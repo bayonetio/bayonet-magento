@@ -29,7 +29,7 @@ class OrderHelper
 
     /**
      * Sets the current order to be managed
-     * 
+     *
      * @param \Magento\Sales\Model\Order $processingOrder
      */
     public function setOrder($processingOrder)
@@ -39,7 +39,7 @@ class OrderHelper
 
     /**
      * Gets the current order being managed
-     * 
+     *
      * @return \Magento\Sales\Model\Order
      */
     public function getOrder()
@@ -51,7 +51,7 @@ class OrderHelper
      * Generates the request body for an order object, depending on the
      * request type, the body will be generated for either a backfill
      * order or a consulting order
-     * 
+     *
      * @param string $requestType
      * @return array
      */
@@ -83,10 +83,10 @@ class OrderHelper
             $fingerprintToken = $bayonetFingerprint->load($this->getOrder()->getCustomerId(), 'customer_id');
             if (!empty($fingerprintToken->getData())) {
                 $requestBody['bayonet_fingerprint_token'] = $fingerprintToken->getData('fingerprint_token');
-                $resetTokenData = array(
+                $resetTokenData = [
                     'fingerprint_id' => $fingerprintToken->getData('fingerprint_id'),
                     'fingerprint_token' => null
-                );
+                ];
                 $bayonetFingerprint->setData($resetTokenData);
                 $bayonetFingerprint->save();
             }
@@ -102,7 +102,7 @@ class OrderHelper
 
     /**
      * Gets the customer name of an order object
-     * 
+     *
      * @return string
      */
     protected function getCustomerName()
@@ -113,7 +113,7 @@ class OrderHelper
     /**
      * Generates an address in the required format for the Bayonet API request using
      * the provided address object
-     * 
+     *
      * @param array $address
      * @return array
      */
@@ -125,8 +125,8 @@ class OrderHelper
 
         $generatedAddress = [];
         $street = $address->getStreet();
-        $generatedAddress['line_1'] = (!is_null($street) && array_key_exists('0', $street)) ? $street['0'] : null;
-        $generatedAddress['line_2'] = (!is_null($street) && array_key_exists('1', $street)) ? $street['1'] : null;
+        $generatedAddress['line_1'] = ($street !== null && array_key_exists('0', $street)) ? $street['0'] : null;
+        $generatedAddress['line_2'] = ($street !== null && array_key_exists('1', $street)) ? $street['1'] : null;
         $generatedAddress['city'] = $address->getCity();
         $generatedAddress['state'] = $address->getRegion();
         $generatedAddress['country'] = $this->convertCountryCode($address->getCountryId());
@@ -174,7 +174,7 @@ class OrderHelper
     protected function getProducts()
     {
         $orderItems = $this->getOrder()->getAllItems();
-        $products_list = array();
+        $products_list = [];
 
         foreach ($orderItems as $item) {
             $products_list[] = [
@@ -189,7 +189,7 @@ class OrderHelper
 
     /**
      * Gets the payment gateway code of an order/quote
-     * 
+     *
      * @param array $paymentData
      * @return string
      */
@@ -205,7 +205,7 @@ class OrderHelper
      * It will first check if the method is offline or paypal, if none
      * of this is true, it will call the definePaymentDetails function
      * to try and map the payment details
-     * 
+     *
      * @param array $paymentData
      * @return array
      */
@@ -216,7 +216,7 @@ class OrderHelper
         if ($paymentData->getMethodInstance()->isOffline()) {
             $paymentDetails['payment_method'] = 'offline';
             $paymentDetails['payment_gateway'] = $this->getPaymentGateway($paymentData);
-        } else if (strpos(strtolower($this->getPaymentGateway($paymentData)), 'paypal') !== false) {
+        } elseif (strpos(strtolower($this->getPaymentGateway($paymentData)), 'paypal') !== false) {
             $paymentDetails['payment_method'] = 'paypal';
             $paymentDetails['payment_gateway'] = 'paypal';
         } else {
@@ -232,7 +232,7 @@ class OrderHelper
      * module handles and then calls either the checkForCard or
      * mapPaymentDetails function depending on whether the gateway
      * accepts cards or not
-     * 
+     *
      * @param array $paymentData
      * @return array
      */
@@ -248,13 +248,13 @@ class OrderHelper
 
         if (strpos($paymentGateway, 'conekta') !== false) {
             $paymentDetails = $this->checkForCard($paymentGateway, 'conekta');
-        } else if (strpos($paymentGateway, 'openpay') !== false) {
+        } elseif (strpos($paymentGateway, 'openpay') !== false) {
             $paymentDetails = $this->checkForCard($paymentGateway, 'openpay');
-        } else if (strpos($paymentGateway, 'braintree') !== false) {
+        } elseif (strpos($paymentGateway, 'braintree') !== false) {
             $paymentDetails = $this->mapPaymentDetails('braintree');
-        } else if (strpos($paymentGateway, 'stripe') !== false) {
+        } elseif (strpos($paymentGateway, 'stripe') !== false) {
             $paymentDetails = $this->checkForCard($paymentGateway, 'stripe');
-        } else if (strpos($paymentGateway, 'mercadopago') !== false) {
+        } elseif (strpos($paymentGateway, 'mercadopago') !== false) {
             $paymentDetails = $this->mapPaymentDetails('mercadopago');
         }
 
@@ -265,7 +265,7 @@ class OrderHelper
      * Checks if the payment method of the provided payment gateway
      * is using card to then call the mapPaymentDetails and get the
      * corresponding payment details
-     * 
+     *
      * @param string $paymentGatewayCode
      * @param string $gateway
      * @return array
@@ -278,7 +278,7 @@ class OrderHelper
         if (strpos($paymentGatewayCode, 'stripe') !== false) {
             if (array_key_exists('save_card', $this->getOrder()->getPayment()->getAdditionalInformation())) {
                 $paymentDetails = $this->mapPaymentDetails($gateway);
-            } else if (strpos($paymentGatewayCode, 'oxxo') !== false) {
+            } elseif (strpos($paymentGatewayCode, 'oxxo') !== false) {
                 $paymentDetails['payment_method'] = 'offline';
                 $paymentDetails['payment_gateway'] = $paymentGatewayCode;
             }
@@ -300,7 +300,7 @@ class OrderHelper
      * Only conekta stores both the bin & last 4 digits of the cards, thus,
      * it is the only one having the 'card_bin' & 'card_last_4' details;
      * openpay, braintree, stripe and mercadopago will be handled as tokenized card
-     * 
+     *
      * @param string $paymentGateway
      * @return array
      */
@@ -314,23 +314,23 @@ class OrderHelper
                 $paymentDetails['payment_method'] = 'card';
                 $paymentDetails['card_bin'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_bin'];
                 $paymentDetails['card_last_4'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_last_4'];
-            break;
+                break;
             case 'openpay':
                 $paymentDetails['payment_gateway'] = 'openpay';
                 $paymentDetails['payment_method'] = 'tokenized_card';
-            break;
+                break;
             case 'braintree':
                 $paymentDetails['payment_gateway'] = 'braintree';
                 $paymentDetails['payment_method'] = 'tokenized_card';
-            break;
+                break;
             case 'stripe':
                 $paymentDetails['payment_gateway'] = 'stripe';
                 $paymentDetails['payment_method'] = 'tokenized_card';
-            break;
+                break;
             case 'mercadopago':
                 $paymentDetails['payment_gateway'] = 'mercadopago';
                 $paymentDetails['payment_method'] = 'tokenized_card';
-            break;
+                break;
         }
 
         return $paymentDetails;
@@ -339,7 +339,7 @@ class OrderHelper
     /**
      * Gets the status of an order. This is done by mapping the
      * order's state to a valid transaction status for the API
-     * 
+     *
      * @return string
      */
     public function getTransactionStatus()
@@ -381,7 +381,7 @@ class OrderHelper
      * retrieve the 'created_at' value, meanwhile, if the request body is
      * for a consulting request, it will retrieve the 'updated_at' value.
      * The retrieved date will be translated to a Unix timestamp
-     * 
+     *
      * @param string $requestType
      * @return string
      */
@@ -390,7 +390,7 @@ class OrderHelper
         if ($requestType === 'consulting') {
             $quote = $this->quoteRepository->get($this->getOrder()->getQuoteId());
             return strtotime($quote->getData('updated_at'));
-        } else if ($requestType === 'backfill') {
+        } elseif ($requestType === 'backfill') {
             return strtotime($this->getOrder()->getData('created_at'));
         }
     }
@@ -398,13 +398,13 @@ class OrderHelper
     /**
      * Converts the country codes to 3-letter ISO codes
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
-     * 
+     *
      * @param string $country
      * @return string
      */
     protected function convertCountryCode($country)
     {
-        $countries = array(
+        $countries = [
             'AF' => 'AFG', //Afghanistan
             'AX' => 'ALA', //&#197;land Islands
             'AL' => 'ALB', //Albania
@@ -655,7 +655,7 @@ class OrderHelper
             'YE' => 'YEM', //Yemen
             'ZM' => 'ZMB', //Zambia
             'ZW' => 'ZWE', //Zimbabwe
-        );
+        ];
         $iso_code = isset($countries[$country]) ? $countries[$country] : $country;
 
         return $iso_code;

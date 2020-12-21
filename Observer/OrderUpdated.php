@@ -54,24 +54,36 @@ class OrderUpdated implements ObserverInterface
         $sandboxKey = $this->getHelper->getConfigValue('bayonet_sandbox_key');
 
         if (!$order) {
-           return;
+            return;
         }
 
         $this->orderHelper->setOrder($order);
         $whereConditions = [
-            'quote_id' => intval($order->getData('quote_id')),
+            'quote_id' => (int)$order->getData('quote_id'),
             'decision' => 'decline'
         ];
 
         try {
-            $bayonetId = intval($this->directQuery->customQuery('bayonet_antifraud_orders', 'bayonet_id', $whereConditions));
-            $trackingId = $this->directQuery->customQuery('bayonet_antifraud_orders', 'bayonet_tracking_id', $whereConditions);
+            $bayonetId = (int)$this->directQuery->customQuery(
+                'bayonet_antifraud_orders',
+                'bayonet_id',
+                $whereConditions
+            );
+            $trackingId = $this->directQuery->customQuery(
+                'bayonet_antifraud_orders',
+                'bayonet_tracking_id',
+                $whereConditions
+            );
 
             if (!$bayonetId || !$trackingId) {
                 return;
             }
 
-            $currentState = $this->directQuery->customQuery('bayonet_antifraud_orders', 'current_state', $whereConditions);
+            $currentState = $this->directQuery->customQuery(
+                'bayonet_antifraud_orders',
+                'current_state',
+                $whereConditions
+            );
 
             if ($currentState === $order->getState()) {
                 return;
@@ -82,14 +94,14 @@ class OrderUpdated implements ObserverInterface
                 'transaction_status' => $this->orderHelper->getTransactionStatus()
             ];
 
-            $requestBody['auth']['api_key'] = intval($apiMode) === 1 ? $liveKey : $sandboxKey;
+            $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
 
             $response = $this->requestHelper->updateTransaction($requestBody);
             $bayonetOrder = $this->bayonetOrderFactory->create();
-            $orderData = array(
+            $orderData = [
                 'bayonet_id' => $bayonetId,
                 'current_state' => $order->getState()
-            );
+            ];
 
             if (!$currentState) {
                 $orderData['order_id'] = $order->getId();
@@ -98,10 +110,10 @@ class OrderUpdated implements ObserverInterface
             if ($response) {
                 $orderData['feedback_api'] = 1;
                 $orderData['feedback_api_response'] = json_encode(
-                    array(
+                    [
                         'reason_code' => $response->reason_code,
                         'reason_message' => $response->reason_message,
-                    )
+                    ]
                 );
             } else {
                 $orderData['feedback_api'] = 0;

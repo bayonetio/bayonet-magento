@@ -26,11 +26,11 @@ class DirectQuery
      * consulting call, a row is inserted to the database but it does not
      * have the necessary data for the update transaction call, in this way,
      * avoiding all the 'declined' rows will then retrieve the correct row
-     * 
+     *
      * @param string $table
      * @param string $requestedValue
      * @param array $whereConditions
-     * 
+     *
      * @return bool|string
      */
     public function customQuery($table, $requestedValue, $whereConditions)
@@ -61,10 +61,10 @@ class DirectQuery
     /**
      * Gets a requested configuration value from the database based on the
      * provided configuration path
-     * 
+     *
      * @param string $keyPath
      * @return string|int
-     * 
+     *
      */
     public function getConfigValue($keyPath)
     {
@@ -85,20 +85,20 @@ class DirectQuery
      * The payment gateway is still stored in the sales_order_payment table
      * though, thus, it is necessary to perform a query to this table to
      * retrieve the correct gateway when performing the backfill process
-     * 
+     *
      * @param int $orderId
      * @return string
      */
     public function getPaymentGateway($orderId)
     {
-        $paymentGateway = $this->customQuery('sales_order_payment', 'method', array('parent_id' => $orderId));
+        $paymentGateway = $this->customQuery('sales_order_payment', 'method', ['parent_id' => $orderId]);
 
         return $paymentGateway;
     }
 
     /**
      * Gets the IDs of the orders already processed by Bayonet
-     * 
+     *
      * @return array
      */
     public function getBayonetIds()
