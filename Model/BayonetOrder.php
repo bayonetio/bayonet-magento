@@ -11,11 +11,14 @@ use \Magento\Framework\Data\Collection\AbstractDb;
 /**
  * Defines the Model for the Bayonet Orders table
  */
-class BayonetOrder extends AbstractModel {
-
+class BayonetOrder extends AbstractModel
+{
     const CACHE_TAG = 'bayonet_antifraud_orders';
     protected $_cacheTag = 'bayonet_antifraud_orders';
     protected $_eventPrefix = 'bayonet_antifraud_orders';
+
+    const API_MODE_SANDBOX = 0;
+    const API_MODE_LIVE = 1;
 
     public function __construct(
         Context $context,
@@ -32,7 +35,7 @@ class BayonetOrder extends AbstractModel {
      */
     protected function _construct()
     {
-        $this->_init('Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetOrder');
+        $this->_init(\Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetOrder::class);
     }
 
     /**
@@ -55,5 +58,15 @@ class BayonetOrder extends AbstractModel {
         $values = [];
 
         return $values;
+    }
+
+    /**
+     * Prepares available API modes for the listing grid
+     *
+     * @return array
+     */
+    public function getAvailableApiModes()
+    {
+        return [self::API_MODE_SANDBOX => __('Sandbox (test)'), self::API_MODE_LIVE => __('Live (production)')];
     }
 }

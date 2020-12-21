@@ -11,11 +11,16 @@ use \Magento\Framework\Data\Collection\AbstractDb;
 /**
  * Defines the Model for the Bayonet Blocklist table
  */
-class BayonetBlocklist extends AbstractModel {
-
+class BayonetBlocklist extends AbstractModel
+{
     const CACHE_TAG = 'bayonet_antifraud_blocklist';
     protected $_cacheTag = 'bayonet_antifraud_blocklist';
     protected $_eventPrefix = 'bayonet_antifraud_blocklist';
+
+    const API_MODE_SANDBOX = 0;
+    const API_MODE_LIVE = 1;
+    const ADDED_LIST = 1;
+    const NOT_ADDED_LIST = 0;
 
     public function __construct(
         Context $context,
@@ -32,7 +37,7 @@ class BayonetBlocklist extends AbstractModel {
      */
     protected function _construct()
     {
-        $this->_init('Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist');
+        $this->_init(\Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist::class);
     }
 
     /**
@@ -55,5 +60,25 @@ class BayonetBlocklist extends AbstractModel {
         $values = [];
 
         return $values;
+    }
+
+    /**
+     * Prepares available API modes for the listing grid
+     *
+     * @return array
+     */
+    public function getAvailableApiModes()
+    {
+        return [self::API_MODE_SANDBOX => __('Sandbox (test)'), self::API_MODE_LIVE => __('Live (production)')];
+    }
+
+    /**
+     * Prepares available list statuses for the listing in the grid
+     *
+     * @return array
+     */
+    public function getAvailableListStatuses()
+    {
+        return [self::ADDED_LIST => __('Added'), self::NOT_ADDED_LIST=> __('Not added')];
     }
 }
