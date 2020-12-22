@@ -141,7 +141,7 @@ class Backfill extends Command
                 $bayonetBackfill->save();
                 $backfillData = $bayonetBackfill->getCollection();
             } else {
-                $output->writeln("API Mode has been switched to testing, exiting process.");
+                $output->writeln("API Mode is currently set to testing, exiting process.");
                 return;
             }
             $orderId = $order->getId();

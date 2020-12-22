@@ -52,7 +52,7 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
 
         if (1 === (int)$apiMode && (empty($bayoLiveKey) || empty($jsLiveKey))) {
             throw new \Magento\Framework\Exception\ValidatorException(__(
-                'Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first.'
+                'Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first'
             ));
         }
 

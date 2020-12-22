@@ -12,7 +12,7 @@
         <tbody>
             <?= $block->getChildHtml(); ?>
         <tr>
-            <th><?= $block->escapeHtml('Order ID:') ?></th>
+            <th><?= $block->escapeHtml(__('ID of Order:')) ?></th>
             <td><?= $block->escapeHtml($block->getOrderIncrementId()); ?></td>
         </tr>
         <tr>
@@ -20,7 +20,7 @@
             <td><?= $block->escapeHtml($block->getTrackingId()); ?></td>
         </tr>
         <tr>
-            <th><?= $block->escapeHtml(__('API Response:')) ?></th>
+            <th><?= $block->escapeHtml(__('API Call Status:')) ?></th>
             <td><?= $block->escapeHtml($block->getApiResponse()); ?></td>
         </tr>
         <tr>

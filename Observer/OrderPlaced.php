@@ -101,7 +101,8 @@ class OrderPlaced implements ObserverInterface
                 $bayonetOrder->setData($orderData);
                 $bayonetOrder->save();
 
-                if (isset($response['decision']) && $response->decision === 'decline') {
+                if (isset($response->decision) && $response->decision === 'decline') {
+                    $this->addBlocklistRows($requestBody['consumer_internal_id'], $requestBody['email']);
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         "There was an error processing your order. Please try again later"
                     ));
@@ -113,7 +114,7 @@ class OrderPlaced implements ObserverInterface
                 $bayonetOrder->save();
             }
 
-            if ($response && (int)$requestBody['consumer_internal_id']) {
+            if (isset($response) && (int)$requestBody['consumer_internal_id']) {
                 $this->addBlocklistRows($requestBody['consumer_internal_id'], $requestBody['email']);
             }
         } catch (Exception $e) {

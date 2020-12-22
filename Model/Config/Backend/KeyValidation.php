@@ -50,7 +50,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
     public function beforeSave()
     {
         $apiKey = $this->getValue();
-        $label = $this->getData('field_config/label');
+        $label = $this->translateKeyLabel($this->getData('field_config/label'));
         $fieldId = $this->getData('field_config/id');
         $requestBody = [
             'auth' => []
@@ -66,14 +66,16 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 // is thrown, otherwise, the process of saving continues.
                 if (isset($response->reason_code) && (int)$response->reason_code !== 101) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
-                        'Invalid '.$label.'. Please check your key and try again'
+                        'Invalid value for the %1. Please check your key and try again',
+                        $label
                     ));
                 } elseif (isset($response->reason_code) && (int)$response->reason_code === 101) {
                     $this->setValue(($this->getValue()));
                     parent::beforeSave();
                 } elseif (!isset($response->reason_code)) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
-                        'An error ocurred while validating the '.$label.'. Please try again'
+                        'An error ocurred while validating the %1. Please try again',
+                        $label
                     ));
                 }
             } elseif (strpos($label, 'Fingerprint') !== false) {
@@ -82,23 +84,25 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
 
                 if (isset($response->reasonCode) && (int)$response->reasonCode !== 51) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
-                        'Invalid '.$label.'. Please check your key and try again'
+                        'Invalid value for the %1. Please check your key and try again',
+                        $label
                     ));
                 } elseif (isset($response->reasonCode) && (int)$response->reasonCode === 51) {
                     $this->setValue(($this->getValue()));
                     parent::beforeSave();
                 } elseif (!isset($response->reasonCode)) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
-                        'An error ocurred while validating the '.$label.'. Please try again'
-                    ));
-                }
+                        'An error ocurred while validating the %1. Please try again',
+                        $label
+                    ));                }
             }
         } elseif (!empty($apiKey) && '**********' === $apiKey) { // when the merchant doesn't modify an existing key
             $currentApiKey = $this->getHelper->getConfigValue($fieldId);
 
             if (strlen($currentApiKey) === 0) { // to avoid trying to trick the module entering a '**********' string
                 throw new \Magento\Framework\Exception\ValidatorException(__(
-                    'Invalid '.$label.'. Please check your key and try again'
+                    'Invalid value for the %1. Please check your key and try again',
+                    $label
                 ));
             } else {
                 $this->setValue($currentApiKey);
@@ -125,5 +129,33 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
             $this->setValue('**********');
         }
         return $this;
+    }
+
+    /**
+     * Translates the key label (if necessary) to spanish
+     *
+     * @param string $keyLabel
+     * @return string
+     */
+    private function translateKeyLabel($keyLabel)
+    {
+        $translatedLabel = '';
+
+        switch ($keyLabel) {
+            case 'Bayonet Sandbox (test) Key':
+                $translatedLabel = __('Bayonet Sandbox (test) Key');
+                break;
+            case 'Device Fingerprint Sandbox (test) Key':
+                $translatedLabel = __('Device Fingerprint (test) Key');
+                break;
+            case 'Bayonet Live (production) Key':
+                $translatedLabel = __('Bayonet Live (production) Key');
+                break;
+            case 'Device Fingerprint Live (production) Key':
+                $translatedLabel = __('Device Fingerprint Live (production) Key');
+                break;
+        }
+
+        return $translatedLabel;
     }
 }

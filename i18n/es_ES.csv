@@ -1,0 +1,107 @@
+"Bayonet Anti-Fraud","Bayonet Anti-Fraud"
+"Bayonet Anti-Fraud Blocklist/Whitelist","Lista de Bloqueo/Aprobación de Bayonet Anti-Fraud"
+"Customer added to blocklist","Cliente agregado a lista de bloqueo"
+"An error ocurred while trying to add to the blocklist. Please try again","Un error ocurrió al intentar agregar el cliente a la lista de bloqueo. Por favor intenta de nuevo"
+"Customer removed from blocklist","Cliente removido de la lista de bloqueo"
+"An error ocurred while trying to remove from the blocklist. Please try again","Un error ocurrió al intentar remover el cliente de la lista de bloqueo. Por favor intenta de nuevo"
+"Customer added to whitelist","Cliente agregado a la lista de aceptación"
+"An error ocurred while trying to add to the whitelist. Please try again","Un error ocurrió al intentar agregar el cliente a la lista de aceptación. Por favor intenta de nuevo"
+"Customer removed from whitelist","Customer removed from whitelist"
+"An error ocurred while trying to remove from the whitelist. Please try again","Un error ocurrió al intentar remover el cliente de la lista de aceptación. Por favor intenta de nuevo"
+"The API key for that API mode has not been added yet. Please add your key and try again","La llave de API para este modo de API no ha sido agregada aún. Por favor agrega tu llave e intenta de nuevo"
+"Orders Processed by Bayonet Anti-Fraud","Ordenes Procesadas por Bayonet Anti-Fraud"
+"Sandbox (test)","Sandbox (prueba)"
+"Live (production)","Live (producción)"
+Added,Agregado
+"Not added","No agregado"
+"Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first","No se puede establecer el modo live (produccion) del API sin las llaves live del API guardadas. Por favor guarda tus llaves live (produccion) primero"
+"This API version is invalid, please try again","Esta version del API es invalida, por favor intentalo de nuevo"
+"Cannot enable the module with no pair of API keys saved. Please save a pair of API keys first","No se puede habilitar el módulo sin ningun par de llaves de API guardadas. Por favor guarda un par de llaves de API primero"
+"Invalid value for the %1. Please check your key and try again","Valor inválido para la %1. Por favor revisa tu llave e intentalo de nuevo"
+"An error ocurred while validating the %1. Please try again","Un error ocurrió al validar la %1. Por favor intentalo de nuevo"
+"Cannot save an empty live (production) API key when the live (production) mode is enabled","No se puede guardar una llave live (producción) de API vacía cuando el modo live (producción) está habilitado"
+"Bayonet Sandbox (test) Key","Llave Sandbox (prueba) de Bayonet"
+"Device Fingerprint (test) Key","Llave Sandbox (prueba) de Device Fingerprint"
+"Bayonet Live (production) Key","Llave Live (producción) de Bayonet"
+"Device Fingerprint Live (production) Key","Llave Live (producción) de Device Fingerprint"
+"There was an error processing your order. Please try again later","Hubo un error procesando tu orden. Por favor intenta de nuevo más tarde"
+"Remove from Blocklist","Remover de la Lista de Bloqueo"
+"Add to Blocklist","Agregar a la Lista de Bloqueo"
+"Remove from Whitelist","Remover de la Lista de Aceptación"
+"Add to Whitelist","Agregar a Lista de Aceptación"
+"Customer with ID %1","Cliente con ID %1"
+"Are you sure you want to %1 customer with ID %2?","Estás seguro de que quieres %1 el cliente con ID %2?"
+"View Order Details","Ver Detalles de Orden"
+"Information for Bayonet Anti-Fraud","Información para Bayonet Anti-Fraud"
+"ID of Order:","ID de orden:"
+"Bayonet Tracking ID:","Bayonet Tracking ID:"
+"API Call Status:","Estatus de la Llama al API:"
+Decision:,Decisión:
+"Triggered Rules:","Reglas Disparadas:"
+"Orders Processed by Bayonet","Ordenes Procesadas por Bayonet"
+Blocklist/Whitelist,Lista de Bloqueo/Aceptación
+"General Configuration","Configuración General"
+"
+                <b>IMPORTANT - READ THE MANUAL</b>
+                <br><br>
+                Don't forget to read this module's manual before using it. Reading the manual will help you a lot in understanding how to configure the module and how it works,
+                in this way, navigating throughout its features will be a lot easier for you.
+                <br><br>
+                Enabling this module's features will require for you to enter your API keys,
+                to obtain them you need to log into <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a> with your Bayonet credentials,
+                once you are logged in, go to the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, where you can get them or generate them if you haven't done that.
+                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+                with your information to provide you with them.
+                <br><br>
+                In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a>.
+                This is located in the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, the same place where you get your API keys.
+                <br><br>
+                If you need any support regarding this module, you can either send a mail to <a href=""mailto:soporte@bayonet.io"">soporte@bayonet.io</a> or contact us via Intercom on our <a href=""https://bayonet.io/"" target=""_blank"" rel=""noopener noreferrer"">Website</a>.
+                <br><br>
+                ","
+<b>IMPORTANTE - LEE EL MANUAL</b>
+<br><br>
+No olvides leer el manual de este módulo antes de usarlo. Leer el manual te ayudará mucho en entender como configurar el módulo y como funciona,
+de esta manera, navegar a través de sus características será mucho más facil para ti.
+<br><br>
+Para habilitar las características de este módulo se requerirá que ingreses tus llaves de API,
+para obtenerlas necesitas ingresar en la <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Consola de Bayonet</a> con tus credenciales de Bayonet,
+una vez que hayas ingresado, ve a la <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">sección de Setup</a>, donde puedes obtenerlas o generarlas si no has eso hecho.
+Si no has recibido tus credenciales de Bayonet aún, por favor envía un correo a <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+con tu información para proveértelas.
+<br><br>
+Para poder usar Bayonet en Modo Live (producción) apropiadamente, debes agregar tanto tu dirección IP y tu dominio a la lista blanca en la <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Consola de Bayonet</a>.
+Esto se encuentra en la <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">sección de Setup</a>, el mismo lugar donde obtienes tu llaves del API.
+<br><br>
+Si necesitas soporte alguno con este módulo, puedes ya sea enviar un correo a <a href=""mailto:soporte@bayonet.io"">soporte@bayonet.io</a> o contactarnos vía Intercom en nuestro <a href="https://bayonet.io/" target="_blank" rel="noopener noreferrer">Website</a>.
+<br><br>"
+"Module Enabled","Módulo Habilitado"
+"When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already","Al estar inhabilitado, el módulo no procesará ninguna order. Solo se puede habilitar cuando al menos un par de llaves API ya han sido guardadas"
+"Live (production) Mode Enabled","Modo Live (producción) Habilitado"
+"When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live (production) API keys have been saved already","Al estar inhabilitado, el módulo procesará todas las ordenes nuevas en modo sandbox (prueba). Solo se puede habilitar cuando ambas llaves live (producción) del API ya han sido guardadas"
+"API Version","Versión del API"
+"The current version of the API. This must not be modified unless asked by the developer","La versión actual del API. Esta no debe ser modificada a menos que el desarrollador lo pida"
+"Bayonet Sandbox (test) Key","Llave Sandbox (prueba) de Bayonet"
+"The sandbox (test) API key for Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","La llave sandbox (prueba) del API de Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Obten la llave</a>"
+"Device Fingerprint Sandbox (test) Key","Llave Sandbox (prueba) de Device Fingerprint"
+"The sandbox (test) API key for the Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","La llave sandbox (prueba) del API de Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Obten la llave</a>"
+"Bayonet Live (production) Key","Llave Live (producción) de Bayonet"
+"The live (production) API key for Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","La llave live (producción) del API de Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Obten la llave</a>"
+"Device Fingerprint Live (production) Key","Llave Live (producción) de Device Fingerprint"
+"The live (production) API key for the Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","La llave live (producción) del API de Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Obten la llave</a>"
+ID,ID
+"ID of Customer","ID de Cliente"
+Email,Correo Electrónico
+Blocklist,Lista de Bloqueo
+Whitelist,Lista de Aceptación
+"Response Code","Código de Respuesta"
+"Response Message","Mensaje de Respuesta"
+"API Mode","Modo del API"
+"Blocklist Action","Acción de Lista de Bloqueo"
+"Whitelist Action","Acción de Lista de Aceptación"
+"ID of Order","ID de Orden"
+"Bayonet Tracking ID","Bayonet Tracking ID"
+Decision,Decisión
+"Triggered Rules","Reglas Disparadas"
+Created,Creado
+"View Order Details","Ver Detalles de Orden"
