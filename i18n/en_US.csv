@@ -21,7 +21,7 @@ Added,Added
 "An error ocurred while validating the %1. Please try again","An error ocurred while validating the %1. Please try again"
 "Cannot save an empty live (production) API key when the live (production) mode is enabled","Cannot save an empty live (production) API key when the live (production) mode is enabled"
 "Bayonet Sandbox (test) Key","Bayonet Sandbox (test) Key"
-"Device Fingerprint (test) Key","Device Fingerprint (test) Key"
+"Device Fingerprint Sandbox (test) Key","Device Fingerprint (test) Key"
 "Bayonet Live (production) Key","Bayonet Live (production) Key"
 "Device Fingerprint Live (production) Key","Device Fingerprint Live (production) Key"
 "There was an error processing your order. Please try again later","There was an error processing your order. Please try again later"

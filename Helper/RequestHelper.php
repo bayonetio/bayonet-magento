@@ -137,7 +137,8 @@ class RequestHelper
     {
         $apiVersion = $this->getHelper->getConfigValue('api_version');
         $requestJson = json_encode($requestBody);
-        $requestUrl = strcmp($api, 'bayonet') === 0 ? 'https://api.bayonet.io/'.$apiVersion.'/'.$endpoint : 'https://fingerprinting.bayonet.io/v2/generate-fingerprint-token';
+        $requestUrl = strcmp($api, 'bayonet') === 0 ? 'https://api.bayonet.io/'.$apiVersion.'/'.$endpoint :
+            'https://fingerprinting.bayonet.io/v2/generate-fingerprint-token';
         $ch = curl_init($requestUrl);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $requestJson);

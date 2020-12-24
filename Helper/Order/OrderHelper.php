@@ -311,9 +311,17 @@ class OrderHelper
         switch ($paymentGateway) {
             case 'conekta':
                 $paymentDetails['payment_gateway'] = 'conekta';
-                $paymentDetails['payment_method'] = 'card';
-                $paymentDetails['card_bin'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_bin'];
-                $paymentDetails['card_last_4'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_last_4'];
+                if (isset($this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_bin']) &&
+                    isset($this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_last_4'])) {
+                    $paymentDetails['card_bin'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_bin'];
+                    $paymentDetails['card_last_4'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_last_4'];
+                } elseif (isset($this->getOrder()->getPayment()->getAdditionalInformation()['cc_bin']) &&
+                    ($this->getOrder()->getPayment()->getAdditionalInformation()['cc_last_4'])) {
+                        $paymentDetails['card_bin'] = $this->getOrder()->getPayment()->getAdditionalInformation()['cc_bin'];
+                        $paymentDetails['card_last_4'] = $this->getOrder()->getPayment()->getAdditionalInformation()['cc_last_4'];
+                } else {
+                    $paymentDetails['payment_method'] = 'tokenized_card';
+                }
                 break;
             case 'openpay':
                 $paymentDetails['payment_gateway'] = 'openpay';

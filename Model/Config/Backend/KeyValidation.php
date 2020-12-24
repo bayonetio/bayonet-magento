@@ -146,7 +146,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 $translatedLabel = __('Bayonet Sandbox (test) Key');
                 break;
             case 'Device Fingerprint Sandbox (test) Key':
-                $translatedLabel = __('Device Fingerprint (test) Key');
+                $translatedLabel = __('Device Fingerprint Sandbox (test) Key');
                 break;
             case 'Bayonet Live (production) Key':
                 $translatedLabel = __('Bayonet Live (production) Key');
