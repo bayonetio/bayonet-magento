@@ -1,4 +1,4 @@
-# Módule Bayonet Anti-Fraud para Magento 2
+# Módulo Bayonet Anti-Fraud para Magento 2
 
 Este módulo te permitirá usar la tecnología de Bayonet en tu tienda de Magento 2 para prevenir el fraude en línea. De esta manera, tu tienda obtendrá un desempeño de ganar/ganar para ti y tus clientes; lo que significa que sabrás cuando un orden sospechosa de un cliente sospechoso está tratando de ser procesada para después declinarla automáticamente, esto hará que tu tasa de fraude sea menor y se reduzcan los contracargos; todo esto mientras tu tienda gana una reputación de ser un lugar seguro para comprar.
 
