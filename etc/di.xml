@@ -1,0 +1,29 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="bayonet_bayonetantifraud_bayonetorder_listing_data_source" xsi:type="string">Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetOrder\Grid\Collection</item>
+                <item name="bayonet_bayonetantifraud_bayonetblocklist_listing_data_source" xsi:type="string">Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetOrder\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">bayonet_antifraud_orders</argument>
+            <argument name="resourceModel" xsi:type="string">Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetOrder</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">bayonet_antifraud_blocklist</argument>
+            <argument name="resourceModel" xsi:type="string">Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\Console\CommandList">
+       <arguments>
+           <argument name="commands" xsi:type="array">
+               <item name="bayonetantifraudBackfill" xsi:type="object">Bayonet\BayonetAntiFraud\Console\Backfill</item>
+           </argument>
+       </arguments>
+   </type>
+</config>
