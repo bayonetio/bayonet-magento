@@ -19,8 +19,8 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(
-            'Bayonet\BayonetAntiFraud\Model\BayonetFingerprint',
-            'Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetFingerprint'
+            \Bayonet\BayonetAntiFraud\Model\BayonetFingerprint::class,
+            \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetFingerprint::class
         );
     }
 

@@ -1,0 +1,108 @@
+"Bayonet Anti-Fraud","Bayonet Anti-Fraud"
+"Bayonet Anti-Fraud Blocklist/Whitelist","Bayonet Anti-Fraud Blocklist/Whitelist"
+"Customer added to blocklist","Customer added to blocklist"
+"An error ocurred while trying to add to the blocklist. Please try again","An error ocurred while trying to add to the blocklist. Please try again"
+"Customer removed from blocklist","Customer removed from blocklist"
+"An error ocurred while trying to remove from the blocklist. Please try again","An error ocurred while trying to remove from the blocklist. Please try again"
+"Customer added to whitelist","Customer added to whitelist"
+"An error ocurred while trying to add to the whitelist. Please try again","An error ocurred while trying to add to the whitelist. Please try again"
+"Customer removed from whitelist","Customer removed from whitelist"
+"An error ocurred while trying to remove from the whitelist. Please try again","An error ocurred while trying to remove from the whitelist. Please try again"
+"The API key for that API mode has not been added yet. Please add your key and try again","The API key for that API mode has not been added yet. Please add your key and try again"
+"Orders Processed by Bayonet Anti-Fraud","Orders Processed by Bayonet Anti-Fraud"
+"Sandbox (test)","Sandbox (test)"
+"Live (production)","Live (production)"
+Added,Added
+"Not added","Not added"
+"Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first","Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first"
+"This API version is invalid, please try again","This API version is invalid, please try again"
+"Cannot enable the module with no pair of API keys saved. Please save a pair of API keys first","Cannot enable the module with no pair of API keys saved. Please save a pair of API keys first"
+"Invalid value for the %1. Please check your key and try again","Invalid value for the %1. Please check your key and try again"
+"An error ocurred while validating the %1. Please try again","An error ocurred while validating the %1. Please try again"
+"Cannot save an empty live (production) API key when the live (production) mode is enabled","Cannot save an empty live (production) API key when the live (production) mode is enabled"
+"Bayonet Sandbox (test) Key","Bayonet Sandbox (test) Key"
+"Device Fingerprint Sandbox (test) Key","Device Fingerprint (test) Key"
+"Bayonet Live (production) Key","Bayonet Live (production) Key"
+"Device Fingerprint Live (production) Key","Device Fingerprint Live (production) Key"
+"There was an error processing your order. Please try again later","There was an error processing your order. Please try again later"
+"Remove from Blocklist","Remove from Blocklist"
+"Add to Blocklist","Add to Blocklist"
+"Remove from Whitelist","Remove from Whitelist"
+"Add to Whitelist","Add to Whitelist"
+"Customer with ID %1","Customer with ID %1"
+"Are you sure you want to %1 customer with ID %2?","Are you sure you want to %1 customer with ID %2?"
+"View Order Details","View Order Details"
+"Information for Bayonet Anti-Fraud","Information for Bayonet Anti-Fraud"
+"Order ID:","Order ID:"
+"Bayonet Tracking ID:","Bayonet Tracking ID:"
+"API Call Status:","API Call Status:"
+Decision:,Decision:
+"Triggered Rules:","Triggered Rules:"
+"Orders Processed by Bayonet","Orders Processed by Bayonet"
+Blocklist/Whitelist,Blocklist/Whitelist
+"General Configuration","General Configuration"
+"
+                
+                <b>IMPORTANT - READ THE MANUAL</b>
+                <br><br>
+                Don't forget to read this module's manual before using it. Reading the manual will help you a lot in understanding how to configure the module and how it works,
+                in this way, navigating throughout its features will be a lot easier for you.
+                <br><br>
+                Enabling this module's features will require for you to enter your API keys,
+                to obtain them you need to log into <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a> with your Bayonet credentials,
+                once you are logged in, go to the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, where you can get them or generate them if you haven't done that.
+                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+                with your information to provide you with them.
+                <br><br>
+                In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a>.
+                This is located in the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, the same place where you get your API keys.
+                <br><br>
+                If you need any support regarding this module, you can either send a mail to <a href=""mailto:soporte@bayonet.io"">soporte@bayonet.io</a> or contact us via Intercom on our <a href=""https://bayonet.io/"" target=""_blank"" rel=""noopener noreferrer"">Website</a>.
+                <br><br>
+                
+                ","
+                
+                <b>IMPORTANT - READ THE MANUAL</b>
+                <br><br>
+                Don't forget to read this module's manual before using it. Reading the manual will help you a lot in understanding how to configure the module and how it works,
+                in this way, navigating throughout its features will be a lot easier for you.
+                <br><br>
+                Enabling this module's features will require for you to enter your API keys,
+                to obtain them you need to log into <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a> with your Bayonet credentials,
+                once you are logged in, go to the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, where you can get them or generate them if you haven't done that.
+                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+                with your information to provide you with them.
+                <br><br>
+                In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a>.
+                This is located in the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, the same place where you get your API keys.
+                <br><br>
+                If you need any support regarding this module, you can either send a mail to <a href=""mailto:soporte@bayonet.io"">soporte@bayonet.io</a> or contact us via Intercom on our <a href=""https://bayonet.io/"" target=""_blank"" rel=""noopener noreferrer"">Website</a>.
+                <br><br>
+                
+                "
+"Module Enabled","Module Enabled"
+"When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already","When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already"
+"Live (production) Mode Enabled","Live (production) Mode Enabled"
+"When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live (production) API keys have been saved already","When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live (production) API keys have been saved already"
+"API Version","API Version"
+"The current version of the API. This must not be modified unless asked by the developer","The current version of the API. This must not be modified unless asked by the developer"
+"The sandbox (test) API key for Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","The sandbox (test) API key for Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>"
+"Device Fingerprint Sandbox (test) Key","Device Fingerprint Sandbox (test) Key"
+"The sandbox (test) API key for the Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","The sandbox (test) API key for the Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>"
+"The live (production) API key for Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","The live (production) API key for Bayonet. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>"
+"The live (production) API key for the Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>","The live (production) API key for the Device Fingerprint. <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer""> Get the key</a>"
+ID,ID
+"ID of Customer","ID of Customer"
+Email,Email
+Blocklist,Blocklist
+Whitelist,Whitelist
+"Response Code","Response Code"
+"Response Message","Response Message"
+"API Mode","API Mode"
+"Blocklist Action","Blocklist Action"
+"Whitelist Action","Whitelist Action"
+"ID of Order","ID of Order"
+"Bayonet Tracking ID","Bayonet Tracking ID"
+Decision,Decision
+"Triggered Rules","Triggered Rules"
+Created,Created

@@ -2,14 +2,29 @@
 
 namespace Bayonet\BayonetAntiFraud\Helper;
 
+use \Magento\Framework\Model\Context;
+use \Magento\Framework\Registry;
+use \Magento\Framework\App\Config\ScopeConfigInterface;
+use \Magento\Framework\App\Cache\TypeListInterface;
+use \Magento\Framework\Model\ResourceModel\AbstractResource;
+use \Magento\Framework\Data\Collection\AbstractDb;
+use \Bayonet\BayonetAntiFraud\Helper\GetData;
+
 /**
  * Contains the required functions to perform request to the Bayonet/Fingerprint API
  */
 class RequestHelper
 {
+    protected $getHelper;
+
+    public function __construct(GetData $getHelper)
+    {
+        $this->getHelper = $getHelper;
+    }
+
     /**
      * Performs a consulting request to the Bayonet API
-     * 
+     *
      * @param array $requestBody
      * @return array
      */
@@ -22,7 +37,7 @@ class RequestHelper
 
     /**
      * Performs a feedback historical request to the Bayonet API
-     * 
+     *
      * @param array $requestBody
      * @return array
      */
@@ -34,9 +49,22 @@ class RequestHelper
     }
 
     /**
+     * Performs an update transaction request to the Bayonet API
+     *
+     * @param array $requestBody
+     * @return array
+     */
+    public function updateTransaction($requestBody)
+    {
+        $updateResponse = $this->request('sigma/update-transaction', $requestBody, 'bayonet');
+
+        return $updateResponse;
+    }
+
+    /**
      * Performs a request to the Fingerprint API
      * Used only to validate fingerprint API keys
-     * 
+     *
      * @param string $requestBody
      * @return array
      */
@@ -107,15 +135,17 @@ class RequestHelper
      */
     private function request($endpoint, $requestBody, $api)
     {
+        $apiVersion = $this->getHelper->getConfigValue('api_version');
         $requestJson = json_encode($requestBody);
-        $requestUrl = strcmp($api, 'bayonet') === 0 ? 'https://api.bayonet.io/v2/'.$endpoint : 'https://fingerprinting.bayonet.io/v2/generate-fingerprint-token';
+        $requestUrl = strcmp($api, 'bayonet') === 0 ? 'https://api.bayonet.io/'.$apiVersion.'/'.$endpoint :
+            'https://fingerprinting.bayonet.io/v2/generate-fingerprint-token';
         $ch = curl_init($requestUrl);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $requestJson);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json')
-        );
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
 
         $response = curl_exec($ch);
         $response = json_decode($response);

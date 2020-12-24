@@ -30,7 +30,7 @@ class BlocklistAction extends Column
      * Prepares the data source and adds the corresponding action in a column
      * inside the admin grid. The action will add the current customer to
      * either the blocklist or whitelist
-     * 
+     *
      * @param array $dataSource
      */
     public function prepareDataSource(array $dataSource)
@@ -38,16 +38,18 @@ class BlocklistAction extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['blocklist_id'])) {
-                    $columnName = $this->getData('config/label');
+                    $columnName = $this->getData('name');
                     $actionLabel = '';
                     $actionToPerform = 0;
                     $listToManage = 'blocklist';
-                    if (strpos($columnName, 'Block') !== false) {
-                        $actionLabel = intval($item['blocklist']) === 1 ? 'Remove from Blocklist' : 'Add to Blocklist';
-                        $actionToPerform = intval($item['blocklist']) === 1 ? 0 : 1;
-                    } else if (strpos($columnName, 'White') !== false) {
-                        $actionLabel = intval($item['whitelist']) === 1 ? 'Remove from Whitelist' : 'Add to Whitelist';
-                        $actionToPerform = intval($item['whitelist']) === 1 ? 0 : 1;
+                    if (strpos($columnName, 'block') !== false) {
+                        $actionLabel = (int)$item['blocklist'] === 1 ? __('Remove from Blocklist') :
+                            __('Add to Blocklist');
+                        $actionToPerform = (int)$item['blocklist'] === 1 ? 0 : 1;
+                    } elseif (strpos($columnName, 'white') !== false) {
+                        $actionLabel = (int)$item['whitelist'] === 1 ? __('Remove from Whitelist') :
+                            __('Add to Whitelist');
+                        $actionToPerform = (int)$item['whitelist'] === 1 ? 0 : 1;
                         $listToManage = 'whitelist';
                     }
                     $item[$this->getData('name')] = [
@@ -64,10 +66,14 @@ class BlocklistAction extends Column
                                     'api_mode' => $item['api_mode']
                                 ]
                             ),
-                            'label' => __($actionLabel),
+                            'label' => $actionLabel,
                             'confirm' => [
                                 'title' => __('Customer with ID %1', $item['customer_id']),
-                                'message' => __('Are you sure you want to '.strtolower($actionLabel).' customer with ID %1?', $item['customer_id'])
+                                'message' => __(
+                                    'Are you sure you want to %1 customer with ID %2?',
+                                    strtolower($actionLabel),
+                                    $item['customer_id']
+                                )
                             ],
                             'post' => true
                         ]

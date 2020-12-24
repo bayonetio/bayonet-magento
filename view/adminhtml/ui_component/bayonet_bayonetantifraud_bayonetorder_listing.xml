@@ -23,6 +23,16 @@
             </argument>
         </argument>
     </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="sticky" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
     <columns name="spinner_columns">
         <column name="bayonet_id">
             <argument name="data" xsi:type="array">
@@ -37,7 +47,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Order ID</item>
+                    <item name="label" xsi:type="string" translate="true">ID of Order</item>
                 </item>
             </argument>
         </column>
@@ -49,37 +59,15 @@
                 </item>
             </argument>
         </column>
-        <column name="consulting_api">
+        <column name="api_mode">
             <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Bayonet\BayonetAntiFraud\Model\BayonetOrder\Source\ApiMode</item>
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Consulting API Result</item>
-                </item>
-            </argument>
-        </column>
-        <column name="consulting_api_response">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="width" xsi:type="string">150px</item>
-                    <item name="label" xsi:type="string" translate="true">Consulting API Response</item>
-                </item>
-            </argument>
-        </column>
-        <column name="feedback_api">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="width" xsi:type="string">150px</item>
-                    <item name="label" xsi:type="string" translate="true">Feedback API Result</item>
-                </item>
-            </argument>
-        </column>
-        <column name="feedback_api_response">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Feedback API Response</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">API Mode</item>
                 </item>
             </argument>
         </column>
@@ -99,14 +87,6 @@
                 </item>
             </argument>
         </column>
-        <column name="executed">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Executed</item>
-                </item>
-            </argument>
-        </column>
         <column name="date_added" class="Magento\Ui\Component\Listing\Columns\Date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -123,7 +103,7 @@
                     <item name="indexField" xsi:type="string">bayonet_id</item>
                     <item name="viewUrlPath" xsi:type="string">sales/order/view</item>
                     <item name="urlEntityParamName" xsi:type="string">order_id</item>
-                    <item name="label" xsi:type="string" translate="true">View Order</item>
+                    <item name="label" xsi:type="string" translate="true">View Order Details</item>
                 </item>
             </argument>
         </actionsColumn>

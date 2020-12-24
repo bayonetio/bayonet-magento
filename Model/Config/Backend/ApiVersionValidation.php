@@ -15,18 +15,15 @@ use \Bayonet\BayonetAntiFraud\Helper\GetData;
  *
  * Validates the API mode value before updating it to the core_config_data table
  */
-class ApiModeValidation extends \Magento\Framework\App\Config\Value
+class ApiVersionValidation extends \Magento\Framework\App\Config\Value
 {
-    protected $getHelper;
-
     public function __construct(
         Context $context,
         Registry $registry,
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
-        GetData $getHelper
+        AbstractDb $resourceCollection = null
     ) {
         parent::__construct(
             $context,
@@ -36,7 +33,6 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
             $resource,
             $resourceCollection
         );
-        $this->getHelper = $getHelper;
     }
 
     /**
@@ -46,13 +42,27 @@ class ApiModeValidation extends \Magento\Framework\App\Config\Value
      */
     public function beforeSave()
     {
-        $apiMode = $this->getValue();
-        $bayoLiveKey = $this->getHelper->getConfigValue('bayonet_live_key');
-        $jsLiveKey = $this->getHelper->getConfigValue('js_live_key');
+        $apiVersion = $this->getValue();
+        $requestBody = [
+            "auth" => [
+            ]
+        ];
 
-        if (1 === (int)$apiMode && (empty($bayoLiveKey) || empty($jsLiveKey))) {
+        $ch = curl_init('https://api.bayonet.io/'.$apiVersion.'/sigma/consult');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestBody));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
+
+        $response = curl_exec($ch);
+        $response = json_decode($response);
+        curl_close($ch);
+        
+        if (!isset($response)) {
             throw new \Magento\Framework\Exception\ValidatorException(__(
-                'Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first'
+                'This API version is invalid, please try again'
             ));
         }
 

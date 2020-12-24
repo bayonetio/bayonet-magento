@@ -49,7 +49,9 @@ class ListAction extends Action
         $listToManage = $this->getRequest()->getParam('list');
         $actionToPerform = $this->getRequest()->getParam('action');
         $apiMode = $this->getRequest()->getParam('api_mode');
-        $apiKey = intval($apiMode) === 1 ? $this->getHelper->getConfigValue('bayonet_live_key') : $this->getHelper->getConfigValue('bayonet_sandbox_key');
+        $apiKey = (int)$apiMode === 1 ?
+            $this->getHelper->getConfigValue('bayonet_live_key') :
+            $this->getHelper->getConfigValue('bayonet_sandbox_key');
 
         if (isset($apiKey) && $apiKey !== '') {
             $requestBody = [
@@ -58,60 +60,108 @@ class ListAction extends Action
             ];
             if ($blocklistId) {
                 if ($listToManage === 'blocklist') {
-                    if (intval($actionToPerform) === 1) {
+                    if ((int)$actionToPerform === 1) {
                         $resultWhite = $this->removeWhite($requestBody);
-                        if (isset($resultWhite) && intval($resultWhite->reason_code) === 0) {
-                            $this->updateListRow($blocklistId, 0, $blocklistCurrent, $resultWhite->reason_code, $resultWhite->reason_message);
+                        if (isset($resultWhite) && (int)$resultWhite->reason_code === 0) {
+                            $this->updateListRow(
+                                $blocklistId,
+                                0,
+                                $blocklistCurrent,
+                                $resultWhite->reason_code,
+                                $resultWhite->reason_message
+                            );
                             $resultBlock = $this->addBlock($requestBody);
-                            if (isset($resultBlock) && intval($resultBlock->reason_code) === 0) {
-                                $this->updateListRow($blocklistId, 0, 1, $resultBlock->reason_code, $resultBlock->reason_message);
+                            if (isset($resultBlock) && (int)$resultBlock->reason_code === 0) {
+                                $this->updateListRow(
+                                    $blocklistId,
+                                    0,
+                                    1,
+                                    $resultBlock->reason_code,
+                                    $resultBlock->reason_message
+                                );
                                 $this->messageManager->addSuccess(__('Customer added to blocklist'));
                                 return $resultRedirect->setPath('*/*/');
                             } else {
-                                $this->messageManager->addError(__('An error ocurred while trying to add to the blocklist. Please try again'));
+                                $this->messageManager->addError(__(
+                                    'An error ocurred while trying to add to the blocklist. Please try again'
+                                ));
                                 return $resultRedirect->setPath('*/*/');
                             }
                         } else {
-                            $this->messageManager->addError(__('An error ocurred while trying to add to the blocklist. Please try again'));
+                            $this->messageManager->addError(__(
+                                'An error ocurred while trying to add to the blocklist. Please try again'
+                            ));
                             return $resultRedirect->setPath('*/*/');
                         }
                     } else {
                         $resultBlock = $this->removeBlock($requestBody);
-                        if (isset($resultBlock) && intval($resultBlock->reason_code) === 0) {
-                            $this->updateListRow($blocklistId, $whitelistCurrent, 0, $resultBlock->reason_code, $resultBlock->reason_message);
+                        if (isset($resultBlock) && (int)$resultBlock->reason_code === 0) {
+                            $this->updateListRow(
+                                $blocklistId,
+                                $whitelistCurrent,
+                                0,
+                                $resultBlock->reason_code,
+                                $resultBlock->reason_message
+                            );
                             $this->messageManager->addSuccess(__('Customer removed from blocklist'));
                             return $resultRedirect->setPath('*/*/');
                         } else {
-                            $this->messageManager->addError(__('An error ocurred while trying to remove from the blocklist. Please try again'));
+                            $this->messageManager->addError(__(
+                                'An error ocurred while trying to remove from the blocklist. Please try again'
+                            ));
                             return $resultRedirect->setPath('*/*/');
                         }
                     }
-                } else if ($listToManage === 'whitelist') {
-                    if (intval($actionToPerform) === 1) {
+                } elseif ($listToManage === 'whitelist') {
+                    if ((int)$actionToPerform === 1) {
                         $resultBlock = $this->removeBlock($requestBody);
-                        if (isset($resultBlock) && intval($resultBlock->reason_code) === 0) {
-                            $this->updateListRow($blocklistId, $whitelistCurrent, 0, $resultBlock->reason_code, $resultBlock->reason_message);
+                        if (isset($resultBlock) && (int)$resultBlock->reason_code === 0) {
+                            $this->updateListRow(
+                                $blocklistId,
+                                $whitelistCurrent,
+                                0,
+                                $resultBlock->reason_code,
+                                $resultBlock->reason_message
+                            );
                             $resultWhite = $this->addWhite($requestBody);
-                            if (isset($resultWhite) && intval($resultWhite->reason_code) === 0) {
+                            if (isset($resultWhite) && (int)$resultWhite->reason_code === 0) {
                                 $this->messageManager->addSuccess(__('Customer added to whitelist'));
-                                $this->updateListRow($blocklistId, 1, 0, $resultWhite->reason_code, $resultWhite->reason_message);
+                                $this->updateListRow(
+                                    $blocklistId,
+                                    1,
+                                    0,
+                                    $resultWhite->reason_code,
+                                    $resultWhite->reason_message
+                                );
                                 return $resultRedirect->setPath('*/*/');
                             } else {
-                                $this->messageManager->addError(__('An error ocurred while trying to add to the whitelist. Please try again'));
+                                $this->messageManager->addError(__(
+                                    'An error ocurred while trying to add to the whitelist. Please try again'
+                                ));
                                 return $resultRedirect->setPath('*/*/');
                             }
                         } else {
-                            $this->messageManager->addError(__('An error ocurred while trying to add to the whitelist. Please try again'));
+                            $this->messageManager->addError(__(
+                                'An error ocurred while trying to add to the whitelist. Please try again'
+                            ));
                             return $resultRedirect->setPath('*/*/');
                         }
                     } else {
                         $resultWhite = $this->removeWhite($requestBody);
-                        if (isset($resultWhite) && intval($resultWhite->reason_code) === 0) {
-                            $this->updateListRow($blocklistId, 0, $blocklistCurrent, $resultWhite->reason_code, $resultWhite->reason_message);
+                        if (isset($resultWhite) && (int)$resultWhite->reason_code === 0) {
+                            $this->updateListRow(
+                                $blocklistId,
+                                0,
+                                $blocklistCurrent,
+                                $resultWhite->reason_code,
+                                $resultWhite->reason_message
+                            );
                             $this->messageManager->addSuccess(__('Customer removed from whitelist'));
                             return $resultRedirect->setPath('*/*/');
                         } else {
-                            $this->messageManager->addError(__('An error ocurred while trying to remove from the whitelist. Please try again'));
+                            $this->messageManager->addError(__(
+                                'An error ocurred while trying to remove from the whitelist. Please try again'
+                            ));
                             return $resultRedirect->setPath('*/*/');
                         }
                     }
@@ -120,14 +170,16 @@ class ListAction extends Action
                 return $resultRedirect->setPath('*/*/');
             }
         } else {
-            $this->messageManager->addError(__('The API key for that API mode has not been added yet. Please add your key and try again'));
+            $this->messageManager->addError(__(
+                'The API key for that API mode has not been added yet. Please add your key and try again'
+            ));
             return $resultRedirect->setPath('*/*/');
         }
     }
 
     /**
      * Updates the corresponding blocklist table row with the provided data
-     * 
+     *
      * @param int $blocklistId
      * @param int $whitelistValue
      * @param int $blocklistValue
@@ -138,13 +190,13 @@ class ListAction extends Action
     {
         try {
             $listModel = $this->bayonetBlocklistFactory->create();
-            $data = array(
+            $data = [
                 'blocklist_id' => $blocklistId,
                 'whitelist' => $whitelistValue,
                 'blocklist' => $blocklistValue,
                 'response_code' => $responseCode,
                 'response_message' => $responseMessage
-            );
+            ];
             $listModel->setData($data);
             $listModel->save();
         } catch (\Exception $e) {
@@ -155,7 +207,7 @@ class ListAction extends Action
 
     /**
      * Calls the addBlocklist endpoint function in the request helper
-     * 
+     *
      * @param array $requestBody
      * @return array
      */
@@ -168,7 +220,7 @@ class ListAction extends Action
 
     /**
      * Calls the removeBlocklist endpoint function in the request helper
-     * 
+     *
      * @param array $requestBody
      * @return array
      */
@@ -181,7 +233,7 @@ class ListAction extends Action
 
     /**
      * Calls the addWhitelist endpoint function in the request helper
-     * 
+     *
      * @param array $requestBody
      * @return array
      */
@@ -194,7 +246,7 @@ class ListAction extends Action
 
     /**
      * Calls the removeWhitelist endpoint function in the request helper
-     * 
+     *
      * @param array $requestBody
      * @return array
      */

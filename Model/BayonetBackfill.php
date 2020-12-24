@@ -11,8 +11,8 @@ use \Magento\Framework\Data\Collection\AbstractDb;
 /**
  * Defines the Model for the Backfill table
  */
-class BayonetBackfill extends AbstractModel {
-
+class BayonetBackfill extends AbstractModel
+{
     public function __construct(
         Context $context,
         Registry $registry,
@@ -28,6 +28,6 @@ class BayonetBackfill extends AbstractModel {
      */
     protected function _construct()
     {
-        $this->_init('Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBackfill');
+        $this->_init(\Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBackfill::class);
     }
 }

@@ -65,42 +65,58 @@ class View extends Template implements TabInterface
 
     /**
      * Gets the Bayonet Tracking ID of an order
-     * 
+     *
      * @return string
      */
     public function getTrackingId()
     {
-        return $this->directQuery->getTrackingId($this->getOrderId());
+        return $this->directQuery->customQuery(
+            'bayonet_antifraud_orders',
+            'bayonet_tracking_id',
+            ['order_id' => $this->getOrderId()]
+        );
     }
 
     /**
      * Gets the Bayonet API response of an order
-     * 
+     *
      * @return string
      */
     public function getApiResponse()
     {
-        return $this->directQuery->getApiResponse($this->getOrderId());
+        return $this->directQuery->customQuery(
+            'bayonet_antifraud_orders',
+            'consulting_api_response',
+            ['order_id' => $this->getOrderId()]
+        );
     }
 
     /**
      * Gets the Decision from the Bayonet API of an order
-     * 
+     *
      * @return string
      */
     public function getDecision()
     {
-        return $this->directQuery->getDecision($this->getOrderId());
+        return $this->directQuery->customQuery(
+            'bayonet_antifraud_orders',
+            'decision',
+            ['order_id' => $this->getOrderId()]
+        );
     }
 
     /**
      * Gets the Bayonet API triggered rules (if exist) of an order
-     * 
+     *
      * @return string
      */
     public function getRules()
     {
-        return $this->directQuery->getRules($this->getOrderId());
+        return $this->directQuery->customQuery(
+            'bayonet_antifraud_orders',
+            'triggered_rules',
+            ['order_id' => $this->getOrderId()]
+        );
     }
 
     /**

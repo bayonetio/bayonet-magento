@@ -8,8 +8,8 @@ use \Magento\Framework\Model\ResourceModel\Db\Context;
 /**
  * Defines the Resource Model for the Bayonet Blocklist table
  */
-class BayonetBlocklist extends AbstractDb {
-
+class BayonetBlocklist extends AbstractDb
+{
     protected $_isPkAutoIncrement = false; // if not added, no rows can be inserted
 
     public function __construct(
