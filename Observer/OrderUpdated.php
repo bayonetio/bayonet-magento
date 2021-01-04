@@ -75,7 +75,28 @@ class OrderUpdated implements ObserverInterface
                 $whereConditions
             );
 
-            if (!$bayonetId || !$trackingId) {
+            if (!$bayonetId) {
+                return;
+            }
+
+            if (!$trackingId) {
+                $currentOrderId = $this->directQuery->customQuery(
+                    'bayonet_antifraud_orders',
+                    'order_id',
+                    [
+                        'bayonet_id' => $bayonetId
+                    ]
+                );
+
+                if (!$currentOrderId) {
+                    $bayonetOrder = $this->bayonetOrderFactory->create();
+                    $orderData = [
+                        'bayonet_id' => $bayonetId,
+                        'order_id' => $order->getId()
+                    ];
+                    $bayonetOrder->setData($orderData);
+                    $bayonetOrder->save();
+                }
                 return;
             }
 
@@ -121,6 +142,7 @@ class OrderUpdated implements ObserverInterface
             $bayonetOrder->setData($orderData);
             $bayonetOrder->save();
         } catch (\Exception $e) {
+            return;
         }
     }
 }
