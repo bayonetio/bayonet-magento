@@ -25,7 +25,7 @@ The module currently supports the following payment gateways:
 
 ## Installation
 
-### Installation Using the Magento Back Office
+### Installation Using the Magento Marketplace
 
 You can follow Magento's instruction provided at
 [https://devdocs.magento.com/guides/v2.3/comp-mgr/extens-man/extensman-main-pg.html](https://devdocs.magento.com/guides/v2.3/comp-mgr/extens-man/extensman-main-pg.html)
@@ -46,7 +46,6 @@ You should go to your Magento 2 root directory, and once you are there, run the 
 
 ```bash
 composer require bayonetio/bayonet-magento  # (*)
-composer install
 php bin/magento module:enable Bayonet_BayonetAntiFraud --clear-static-content
 php bin/magento setup:upgrade
 php bin/magento setup:di:compile
