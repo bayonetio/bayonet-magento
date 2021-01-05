@@ -125,8 +125,8 @@ class OrderHelper
 
         $generatedAddress = [];
         $street = $address->getStreet();
-        $generatedAddress['line_1'] = ($street !== null && array_key_exists('0', $street)) ? $street['0'] : null;
-        $generatedAddress['line_2'] = ($street !== null && array_key_exists('1', $street)) ? $street['1'] : null;
+        $generatedAddress['line_1'] = ($street !== null && isset($street['0'])) ? $street['0'] : null;
+        $generatedAddress['line_2'] = ($street !== null && isset($street['1'])) ? $street['1'] : null;
         $generatedAddress['city'] = $address->getCity();
         $generatedAddress['state'] = $address->getRegion();
         $generatedAddress['country'] = $this->convertCountryCode($address->getCountryId());
@@ -276,7 +276,7 @@ class OrderHelper
         $ccCodes = ['cc', 'card', 'tarjeta'];
 
         if (strpos($paymentGatewayCode, 'stripe') !== false) {
-            if (array_key_exists('save_card', $this->getOrder()->getPayment()->getAdditionalInformation())) {
+            if (isset($this->getOrder()->getPayment()->getAdditionalInformation()['save_card'])) {
                 $paymentDetails = $this->mapPaymentDetails($gateway);
             } elseif (strpos($paymentGatewayCode, 'oxxo') !== false) {
                 $paymentDetails['payment_method'] = 'offline';
@@ -311,6 +311,7 @@ class OrderHelper
         switch ($paymentGateway) {
             case 'conekta':
                 $paymentDetails['payment_gateway'] = 'conekta';
+                $paymentDetails['payment_method'] = 'card';
                 if (isset($this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_bin']) &&
                     isset($this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_last_4'])) {
                     $paymentDetails['card_bin'] = $this->getOrder()->getPayment()->getAdditionalInformation()['additional_data']['cc_bin'];
@@ -397,7 +398,11 @@ class OrderHelper
     {
         if ($requestType === 'consulting') {
             $quote = $this->quoteRepository->get($this->getOrder()->getQuoteId());
-            return strtotime($quote->getData('updated_at'));
+            if ($quote->getData('updated_at') !== null) {
+                return strtotime($quote->getData('updated_at'));
+            } elseif ($quote->getData('created_at') !== null) {
+                return strtotime($quote->getData('created_at'));
+            }
         } elseif ($requestType === 'backfill') {
             return strtotime($this->getOrder()->getData('created_at'));
         }

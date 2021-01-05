@@ -46,7 +46,7 @@ class DirectQuery
         if ($whereConditions) {
             foreach ($whereConditions as $key => $value) {
                 if ($key === 'decision') {
-                    $select = $select->where("o.$key != ?", $value);
+                    $select = $select->where("o.$key != ? OR o.$key is NULL", $value);
                 } else {
                     $select = $select->where("o.$key = ?", $value);
                 }
