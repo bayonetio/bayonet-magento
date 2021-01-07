@@ -28,7 +28,7 @@ The module currently supports the following payment gateways:
 ### Installation Using the Magento Marketplace
 
 You can follow Magento's instruction provided at
-[https://devdocs.magento.com/guides/v2.3/comp-mgr/extens-man/extensman-main-pg.html](https://devdocs.magento.com/guides/v2.3/comp-mgr/extens-man/extensman-main-pg.html)
+[https://devdocs.magento.com/extensions/install/](https://devdocs.magento.com/extensions/install/)
 
 ### Installation Using Composer
 
