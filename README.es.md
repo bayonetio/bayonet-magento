@@ -28,7 +28,7 @@ El módulo actualmente soporta las siguientes pasarelas de pago:
 
 ### Instalación Usando el Marketplace de Magento
 
-Puedes seguir las instrucciones que se encuentran en [https://devdocs.magento.com/guides/v2.3/comp-mgr/extens-man/extensman-main-pg.html](https://devdocs.magento.com/guides/v2.3/comp-mgr/extens-man/extensman-main-pg.html)
+Puedes seguir las instrucciones que se encuentran en [https://devdocs.magento.com/extensions/install/](https://devdocs.magento.com/extensions/install/)
 
 ### Instalación Usando Composer
 
