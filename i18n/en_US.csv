@@ -51,13 +51,13 @@ Blocklist/Whitelist,Blocklist/Whitelist
                 Enabling this module's features will require for you to enter your API keys,
                 to obtain them you need to log into <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a> with your Bayonet credentials,
                 once you are logged in, go to the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, where you can get them or generate them if you haven't done that.
-                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:magento@bayonet.io"">magento@bayonet.io</a>
                 with your information to provide you with them.
                 <br><br>
                 In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a>.
                 This is located in the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, the same place where you get your API keys.
                 <br><br>
-                If you need any support regarding this module, you can either send a mail to <a href=""mailto:soporte@bayonet.io"">soporte@bayonet.io</a> or contact us via Intercom on our <a href=""https://bayonet.io/"" target=""_blank"" rel=""noopener noreferrer"">Website</a>.
+                If you need any support regarding this module, you can either send a mail to <a href=""mailto:magento@bayonet.io"">magento@bayonet.io</a> or contact us via Intercom on our <a href=""https://bayonet.io/"" target=""_blank"" rel=""noopener noreferrer"">Website</a>.
                 <br><br>
                 
                 ","
@@ -70,7 +70,7 @@ Blocklist/Whitelist,Blocklist/Whitelist
                 Enabling this module's features will require for you to enter your API keys,
                 to obtain them you need to log into <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a> with your Bayonet credentials,
                 once you are logged in, go to the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, where you can get them or generate them if you haven't done that.
-                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:magento@bayonet.io"">magento@bayonet.io</a>
                 with your information to provide you with them.
                 <br><br>
                 In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a>.
