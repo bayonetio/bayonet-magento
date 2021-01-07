@@ -50,7 +50,7 @@ Blocklist/Whitelist,Lista de Bloqueo/Aceptación
                 Enabling this module's features will require for you to enter your API keys,
                 to obtain them you need to log into <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a> with your Bayonet credentials,
                 once you are logged in, go to the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, where you can get them or generate them if you haven't done that.
-                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+                If you haven't received your Bayonet credentials yet, please send an email to <a href=""mailto:magento@bayonet.io"">magento@bayonet.io</a>
                 with your information to provide you with them.
                 <br><br>
                 In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a>.
@@ -67,7 +67,7 @@ de esta manera, navegar a través de sus características será mucho más facil
 Para habilitar las características de este módulo se requerirá que ingreses tus llaves de API,
 para obtenerlas necesitas ingresar en la <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Consola de Bayonet</a> con tus credenciales de Bayonet,
 una vez que hayas ingresado, ve a la <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">sección de Setup</a>, donde puedes obtenerlas o generarlas si no has eso hecho.
-Si no has recibido tus credenciales de Bayonet aún, por favor envía un correo a <a href=""mailto:contacto@bayonet.io"">contacto@bayonet.io</a>
+Si no has recibido tus credenciales de Bayonet aún, por favor envía un correo a <a href=""mailto:magento@bayonet.io"">magento@bayonet.io</a>
 con tu información para proveértelas.
 <br><br>
 Para poder usar Bayonet en Modo Live (producción) apropiadamente, debes agregar tanto tu dirección IP y tu dominio a la lista blanca en la <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Consola de Bayonet</a>.
