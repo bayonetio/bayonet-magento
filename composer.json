@@ -1,5 +1,5 @@
 {
-    "name": "bayonetio/bayonet-magento",
+    "name": "bayonet/bayonet-magento",
     "description":"Fraud prevention module for Magento 2 by Bayonet",
     "keywords": [
       "magento 2",
@@ -14,7 +14,7 @@
       "magento/framework": "100.1.*|101.0.*|102.0.*|103.0.*"
     },
     "type": "magento2-module",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "license": [
       "OSL-3.0",
       "AFL-3.0"
