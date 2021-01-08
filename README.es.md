@@ -45,7 +45,7 @@ Por favor sigue las instrucciones que se encuentran en [https://getcomposer.org/
 Deberás ir a la raíz de tu directorio de Magento 2, una vez que estés ahí, ejecuta los siguientes comandos:
 
 ```bash
-composer require bayonetio/bayonet-magento  # (*)
+composer require bayonet/bayonet-magento  # (*)
 php bin/magento module:enable Bayonet_BayonetAntiFraud --clear-static-content
 php bin/magento setup:upgrade
 php bin/magento setup:di:compile
