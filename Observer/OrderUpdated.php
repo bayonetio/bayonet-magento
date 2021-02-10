@@ -82,7 +82,7 @@ class OrderUpdated implements ObserverInterface
             if (!$trackingId) {
                 $currentOrderId = $this->directQuery->customQuery(
                     'bayonet_antifraud_orders',
-                    'order_id',
+                    'entity_id',
                     [
                         'bayonet_id' => $bayonetId
                     ]
@@ -92,7 +92,7 @@ class OrderUpdated implements ObserverInterface
                     $bayonetOrder = $this->bayonetOrderFactory->create();
                     $orderData = [
                         'bayonet_id' => $bayonetId,
-                        'order_id' => $order->getId()
+                        'entity_id' => $order->getId()
                     ];
                     $bayonetOrder->setData($orderData);
                     $bayonetOrder->save();
@@ -125,7 +125,7 @@ class OrderUpdated implements ObserverInterface
             ];
 
             if (!$currentState) {
-                $orderData['order_id'] = $order->getId();
+                $orderData['entity_id'] = $order->getId();
             }
 
             if ($response) {
