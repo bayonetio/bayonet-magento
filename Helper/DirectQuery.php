@@ -105,7 +105,7 @@ class DirectQuery
     {
         $connection  = $this->resourceConnection->getConnection();
         $tableName = $connection->getTableName('bayonet_antifraud_orders');
-        $query = $connection->select('distinct')->from($tableName, 'order_id')->where('order_id is not null');
+        $query = $connection->select('distinct')->from($tableName, 'entity_id')->where('entity_id is not null');
         $result = $connection->fetchCol($query);
 
         return $result;

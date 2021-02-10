@@ -73,7 +73,7 @@ class View extends Template implements TabInterface
         return $this->directQuery->customQuery(
             'bayonet_antifraud_orders',
             'bayonet_tracking_id',
-            ['order_id' => $this->getOrderId()]
+            ['entity_id' => $this->getOrderId()]
         );
     }
 
@@ -87,7 +87,7 @@ class View extends Template implements TabInterface
         return $this->directQuery->customQuery(
             'bayonet_antifraud_orders',
             'consulting_api_response',
-            ['order_id' => $this->getOrderId()]
+            ['entity_id' => $this->getOrderId()]
         );
     }
 
@@ -101,7 +101,7 @@ class View extends Template implements TabInterface
         return $this->directQuery->customQuery(
             'bayonet_antifraud_orders',
             'decision',
-            ['order_id' => $this->getOrderId()]
+            ['entity_id' => $this->getOrderId()]
         );
     }
 
@@ -115,7 +115,7 @@ class View extends Template implements TabInterface
         return $this->directQuery->customQuery(
             'bayonet_antifraud_orders',
             'triggered_rules',
-            ['order_id' => $this->getOrderId()]
+            ['entity_id' => $this->getOrderId()]
         );
     }
 

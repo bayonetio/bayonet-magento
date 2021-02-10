@@ -22,7 +22,7 @@ class InstallSchema implements InstallSchemaInterface
             ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
             'Bayonet ID'
         )->addColumn(
-            'order_id',
+            'entity_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,
             ['nullable' => true],
