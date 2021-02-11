@@ -110,4 +110,20 @@ class DirectQuery
 
         return $result;
     }
+
+    /**
+     * Gets the IDs of the rows in the Blocklist table associated to an email
+     *
+     * @param string $email
+     * @return array
+     */
+    public function getBlocklistIds($email)
+    {
+        $connection  = $this->resourceConnection->getConnection();
+        $tableName = $connection->getTableName('bayonet_antifraud_blocklist');
+        $query = $connection->select('distinct')->from($tableName, 'blocklist_id')->where('email = ?', $email);
+        $result = $connection->fetchCol($query);
+
+        return $result;
+    }
 }

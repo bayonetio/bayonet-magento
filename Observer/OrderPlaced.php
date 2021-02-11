@@ -82,7 +82,7 @@ class OrderPlaced implements ObserverInterface
                 'api_mode' => $apiMode
             ];
 
-            if ($response) {
+            if (isset($response)) {
                 $orderData['bayonet_tracking_id'] = (int)$response->reason_code === 0 ?
                     $response->bayonet_tracking_id :
                     null;
@@ -102,7 +102,7 @@ class OrderPlaced implements ObserverInterface
                 $bayonetOrder->save();
 
                 if (isset($response->decision) && $response->decision === 'decline') {
-                    $this->addBlocklistRows($requestBody['consumer_internal_id'], $requestBody['email']);
+                    $this->addBlocklistRows($requestBody['email']);
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         "There was an error processing your order. Please try again later"
                     ));
@@ -114,10 +114,10 @@ class OrderPlaced implements ObserverInterface
                 $bayonetOrder->save();
             }
 
-            if (isset($response) && (int)$requestBody['consumer_internal_id']) {
-                $this->addBlocklistRows($requestBody['consumer_internal_id'], $requestBody['email']);
+            if (isset($response)) {
+                $this->addBlocklistRows($requestBody['email']);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return;
         }
     }
@@ -149,21 +149,19 @@ class OrderPlaced implements ObserverInterface
     }
 
     /**
-     * Adds a customer to the Bayonet's blocklist table in the database.
+     * Adds a customer's email to the Bayonet's blocklist table in the database.
      * It performs a validation before trying to add them, this to make
-     * sure the customer is not present in the table yet
+     * sure the email is not present in the table already
      *
-     * @param string $customerId
      * @param string $email
      */
-    protected function addBlocklistRows($customerId, $email)
+    protected function addBlocklistRows($email)
     {
         $bayonetBlocklist = $this->bayonetBlocklistFactory->create();
-        $blocklistRow = $bayonetBlocklist->load($customerId, 'customer_id');
+        $blocklistIds = $this->directQuery->getBlocklistIds($email);
 
-        if (empty($blocklistRow->getData())) {
+        if (empty($blocklistIds)) {
             $blocklistData = [
-                'customer_id' => $customerId,
                 'email' => $email,
                 'api_mode' => 0
             ];
