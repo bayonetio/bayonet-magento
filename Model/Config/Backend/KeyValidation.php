@@ -49,6 +49,8 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
      */
     public function beforeSave()
     {
+        $invalidBayonet = [ 12, 13, 15 ];
+        $invalidJS = [ 12, 15, 16];
         $apiKey = $this->getValue();
         $label = $this->translateKeyLabel($this->getData('field_config/label'));
         $fieldId = $this->getData('field_config/id');
@@ -61,18 +63,30 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 $requestBody['auth']['api_key'] = $apiKey;
                 $response = $this->requestHelper->consulting($requestBody);
 
-                // if the response from the API was successful but the code is not
-                // the one expected, then the API key is not valid and an excepction
-                // is thrown, otherwise, the process of saving continues.
-                if (isset($response->reason_code) && (int)$response->reason_code !== 101) {
+                // if the response from the API was successful and the code is
+                // the one expected the process of saving continues, otherwise,
+                // the API key is not valid and an excepction is thrown,
+                // otherwise, the process of saving continues.
+                if (isset($response->reason_code) && (int)$response->reason_code === 101) {
+                    $this->setValue(($this->getValue()));
+                    parent::beforeSave();
+                } elseif (isset($response->reason_code) && (int)$response->reason_code === 12) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         'Invalid value for the %1. Please check your key and try again',
                         $label
                     ));
-                } elseif (isset($response->reason_code) && (int)$response->reason_code === 101) {
-                    $this->setValue(($this->getValue()));
-                    parent::beforeSave();
-                } elseif (!isset($response->reason_code)) {
+                } elseif (isset($response->reason_code) && (int)$response->reason_code === 13) {
+                    throw new \Magento\Framework\Exception\ValidatorException(__(
+                        "%1: Source IP is not valid, please add your IP to the whitelist in Bayonet's console",
+                        $label
+                    ));
+                } elseif (isset($response->reason_code) && (int)$response->reason_code === 15) {
+                    throw new \Magento\Framework\Exception\ValidatorException(__(
+                        "%1: The key you entered has expired, please generate a new key from Bayonet's console",
+                        $label
+                    ));
+                } elseif (!isset($response->reason_code) || (isset($response->reason_code) &&
+                    !in_array((int)$response->reason_code, $invalidBayonet))) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         'An error ocurred while validating the %1. Please try again',
                         $label
@@ -82,19 +96,31 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 $requestBody['auth']['jsKey'] = $apiKey;
                 $response = $this->requestHelper->deviceFingerprint($requestBody);
 
-                if (isset($response->reasonCode) && (int)$response->reasonCode !== 51) {
+                if (isset($response->reasonCode) && (int)$response->reasonCode === 51) {
+                    $this->setValue(($this->getValue()));
+                    parent::beforeSave();
+                } elseif (isset($response->reasonCode) && (int)$response->reasonCode === 12) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         'Invalid value for the %1. Please check your key and try again',
                         $label
                     ));
-                } elseif (isset($response->reasonCode) && (int)$response->reasonCode === 51) {
-                    $this->setValue(($this->getValue()));
-                    parent::beforeSave();
-                } elseif (!isset($response->reasonCode)) {
+                } elseif (isset($response->reasonCode) && (int)$response->reasonCode === 15) {
+                    throw new \Magento\Framework\Exception\ValidatorException(__(
+                        "%1: The key you entered has expired, please generate a new key from Bayonet's console",
+                        $label
+                    ));
+                } elseif (isset($response->reasonCode) && (int)$response->reasonCode === 16) {
+                    throw new \Magento\Framework\Exception\ValidatorException(__(
+                        "%1: Store domain is not registered, please add your store domain to the whitelist in Bayonet's console",
+                        $label
+                    ));
+                } elseif (!isset($response->reasonCode) || (isset($response->reasonCode) &&
+                    !in_array((int)$response->reasonCode, $invalidJS))) {
                     throw new \Magento\Framework\Exception\ValidatorException(__(
                         'An error ocurred while validating the %1. Please try again',
                         $label
-                    ));                }
+                    ));
+                }
             }
         } elseif (!empty($apiKey) && '**********' === $apiKey) { // when the merchant doesn't modify an existing key
             $currentApiKey = $this->getHelper->getConfigValue($fieldId);
