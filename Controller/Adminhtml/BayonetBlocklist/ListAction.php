@@ -41,9 +41,7 @@ class ListAction extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
         $customerModel = $this->customerFactory->create();
         $blocklistId = $this->getRequest()->getParam('blocklist_id');
-        $customerId = $this->getRequest()->getParam('customer_id');
-        $customer = $customerModel->load($customerId);
-        $customerEmail = $customer->getEmail();
+        $customerEmail = $this->getRequest()->getParam('email');
         $whitelistCurrent = $this->getRequest()->getParam('whitelistValue');
         $blocklistCurrent = $this->getRequest()->getParam('blocklistValue');
         $listToManage = $this->getRequest()->getParam('list');

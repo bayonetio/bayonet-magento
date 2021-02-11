@@ -156,12 +156,6 @@ class InstallSchema implements InstallSchemaInterface
             ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
             'Bayonet Blocklist ID'
         )->addColumn(
-            'customer_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-            null,
-            ['unsigned' => true, 'nullable' => false],
-            'Customer ID'
-        )->addColumn(
             'email',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,

@@ -58,7 +58,7 @@ class BlocklistAction extends Column
                                 static::CMS_URL_PATH_BLOCKLIST,
                                 [
                                     'blocklist_id' => $item['blocklist_id'],
-                                    'customer_id' => $item['customer_id'],
+                                    'email' => $item['email'],
                                     'blocklistValue' => $item['blocklist'],
                                     'whitelistValue' => $item['whitelist'],
                                     'list' => $listToManage,
@@ -68,11 +68,11 @@ class BlocklistAction extends Column
                             ),
                             'label' => $actionLabel,
                             'confirm' => [
-                                'title' => __('Customer with ID %1', $item['customer_id']),
+                                'title' => __('Email address %1', $item['email']),
                                 'message' => __(
-                                    'Are you sure you want to %1 customer with ID %2?',
+                                    'Are you sure you want to %1 the email %2?',
                                     strtolower($actionLabel),
-                                    $item['customer_id']
+                                    $item['email']
                                 )
                             ],
                             'post' => true
