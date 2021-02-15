@@ -1,12 +1,12 @@
 "Bayonet Anti-Fraud","Bayonet Anti-Fraud"
 "Bayonet Anti-Fraud Blocklist/Whitelist","Bayonet Anti-Fraud Blocklist/Whitelist"
-"Customer added to blocklist","Customer added to blocklist"
+"Email added to blocklist","Email added to blocklist"
 "An error ocurred while trying to add to the blocklist. Please try again","An error ocurred while trying to add to the blocklist. Please try again"
-"Customer removed from blocklist","Customer removed from blocklist"
+"Email removed from blocklist","Email removed from blocklist"
 "An error ocurred while trying to remove from the blocklist. Please try again","An error ocurred while trying to remove from the blocklist. Please try again"
-"Customer added to whitelist","Customer added to whitelist"
+"Email added to whitelist","Email added to whitelist"
 "An error ocurred while trying to add to the whitelist. Please try again","An error ocurred while trying to add to the whitelist. Please try again"
-"Customer removed from whitelist","Customer removed from whitelist"
+"Email removed from whitelist","Email removed from whitelist"
 "An error ocurred while trying to remove from the whitelist. Please try again","An error ocurred while trying to remove from the whitelist. Please try again"
 "The API key for that API mode has not been added yet. Please add your key and try again","The API key for that API mode has not been added yet. Please add your key and try again"
 "Orders Processed by Bayonet Anti-Fraud","Orders Processed by Bayonet Anti-Fraud"
@@ -109,3 +109,9 @@ Whitelist,Whitelist
 Decision,Decision
 "Triggered Rules","Triggered Rules"
 Created,Created
+accept,ACCEPT
+review,REVIEW
+decline,DECLINE
+ACCEPT,ACCEPT
+REVIEW,REVIEW
+DECLINE,DECLINE
