@@ -77,7 +77,7 @@ class ListAction extends Action
                                     $resultBlock->reason_code,
                                     $resultBlock->reason_message
                                 );
-                                $this->messageManager->addSuccess(__('Customer added to blocklist'));
+                                $this->messageManager->addSuccess(__('Email added to blocklist'));
                                 return $resultRedirect->setPath('*/*/');
                             } else {
                                 $this->messageManager->addError(__(
@@ -101,7 +101,7 @@ class ListAction extends Action
                                 $resultBlock->reason_code,
                                 $resultBlock->reason_message
                             );
-                            $this->messageManager->addSuccess(__('Customer removed from blocklist'));
+                            $this->messageManager->addSuccess(__('Email removed from blocklist'));
                             return $resultRedirect->setPath('*/*/');
                         } else {
                             $this->messageManager->addError(__(
@@ -123,7 +123,7 @@ class ListAction extends Action
                             );
                             $resultWhite = $this->addWhite($requestBody);
                             if (isset($resultWhite) && (int)$resultWhite->reason_code === 0) {
-                                $this->messageManager->addSuccess(__('Customer added to whitelist'));
+                                $this->messageManager->addSuccess(__('Email added to whitelist'));
                                 $this->updateListRow(
                                     $blocklistId,
                                     1,
@@ -154,7 +154,7 @@ class ListAction extends Action
                                 $resultWhite->reason_code,
                                 $resultWhite->reason_message
                             );
-                            $this->messageManager->addSuccess(__('Customer removed from whitelist'));
+                            $this->messageManager->addSuccess(__('Email removed from whitelist'));
                             return $resultRedirect->setPath('*/*/');
                         } else {
                             $this->messageManager->addError(__(
