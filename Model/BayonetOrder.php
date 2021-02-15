@@ -19,6 +19,9 @@ class BayonetOrder extends AbstractModel
 
     const API_MODE_SANDBOX = 0;
     const API_MODE_LIVE = 1;
+    const DECISION_ACCEPT = 'accept';
+    const DECISION_REVIEW = 'review';
+    const DECISION_DECLINE = 'decline';
 
     public function __construct(
         Context $context,
@@ -68,5 +71,19 @@ class BayonetOrder extends AbstractModel
     public function getAvailableApiModes()
     {
         return [self::API_MODE_SANDBOX => __('Sandbox (test)'), self::API_MODE_LIVE => __('Live (production)')];
+    }
+
+    /**
+     * Prepares available decisions for the listing grid
+     *
+     * @return array
+     */
+    public function getAvailableDecisions()
+    {
+        return [
+            self::DECISION_ACCEPT => __('ACCEPT'),
+            self::DECISION_REVIEW => __('REVIEW'),
+            self::DECISION_DECLINE => __('DECLINE')
+        ];
     }
 }

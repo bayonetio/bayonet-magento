@@ -1,12 +1,12 @@
 "Bayonet Anti-Fraud","Bayonet Anti-Fraud"
 "Bayonet Anti-Fraud Blocklist/Whitelist","Lista de Bloqueo/Aprobación de Bayonet Anti-Fraud"
-"Customer added to blocklist","Cliente agregado a lista de bloqueo"
+"Email added to blocklist","Correo electrónico agregado a lista de bloqueo"
 "An error ocurred while trying to add to the blocklist. Please try again","Un error ocurrió al intentar agregar el cliente a la lista de bloqueo. Por favor intenta de nuevo"
-"Customer removed from blocklist","Cliente removido de la lista de bloqueo"
+"Email removed from blocklist","Correo electrónico removido de la lista de bloqueo"
 "An error ocurred while trying to remove from the blocklist. Please try again","Un error ocurrió al intentar remover el cliente de la lista de bloqueo. Por favor intenta de nuevo"
-"Customer added to whitelist","Cliente agregado a la lista de aceptación"
+"Email added to whitelist","Correo electrónico agregado a la lista de aceptación"
 "An error ocurred while trying to add to the whitelist. Please try again","Un error ocurrió al intentar agregar el cliente a la lista de aceptación. Por favor intenta de nuevo"
-"Customer removed from whitelist","Customer removed from whitelist"
+"Email removed from whitelist","Correo electrónico removed from whitelist"
 "An error ocurred while trying to remove from the whitelist. Please try again","Un error ocurrió al intentar remover el cliente de la lista de aceptación. Por favor intenta de nuevo"
 "The API key for that API mode has not been added yet. Please add your key and try again","La llave de API para este modo de API no ha sido agregada aún. Por favor agrega tu llave e intenta de nuevo"
 "Orders Processed by Bayonet Anti-Fraud","Ordenes Procesadas por Bayonet Anti-Fraud"
@@ -38,7 +38,7 @@ Added,Agregado
 "Information for Bayonet Anti-Fraud","Información para Bayonet Anti-Fraud"
 "ID of Order:","ID de orden:"
 "Bayonet Tracking ID:","Bayonet Tracking ID:"
-"API Call Status:","Estatus de la Llama al API:"
+"API Call Status:","Estatus de la Llamada al API:"
 Decision:,Decisión:
 "Triggered Rules:","Reglas Disparadas:"
 "Orders Processed by Bayonet","Ordenes Procesadas por Bayonet"
@@ -59,7 +59,7 @@ Blocklist/Whitelist,Lista de Bloqueo/Aceptación
                 In order to be able to use Bayonet in Live Mode properly, you must add both your IP address and your domain to the whitelist in <a href=""https://bayonet.io/login"" target=""_blank"" rel=""noopener noreferrer"">Bayonet's Console</a>.
                 This is located in the <a href=""https://bayonet.io/developers/setup"" target=""_blank"" rel=""noopener noreferrer"">Setup section</a>, the same place where you get your API keys.
                 <br><br>
-                If you need any support regarding this module, you can either send a mail to <a href=""mailto:soporte@bayonet.io"">soporte@bayonet.io</a> or contact us via Intercom on our <a href=""https://bayonet.io/"" target=""_blank"" rel=""noopener noreferrer"">Website</a>.
+                If you need any support regarding this module, you can either send a mail to <a href=""mailto:magento@bayonet.io"">magento@bayonet.io</a> or contact us via Intercom on our <a href=""https://bayonet.io/"" target=""_blank"" rel=""noopener noreferrer"">Website</a>.
                 <br><br>
                 ","
 <b>IMPORTANTE - LEE EL MANUAL</b>
@@ -107,4 +107,9 @@ Whitelist,Lista de Aceptación
 Decision,Decisión
 "Triggered Rules","Reglas Disparadas"
 Created,Creado
-"View Order Details","Ver Detalles de Orden"
+accept,ACEPTAR
+review,REVISAR
+decline,DECLINAR
+ACCEPT,ACEPTAR
+REVIEW,REVISAR
+DECLINE,DECLINAR
