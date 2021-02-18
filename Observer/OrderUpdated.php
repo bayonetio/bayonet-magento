@@ -63,86 +63,82 @@ class OrderUpdated implements ObserverInterface
             'decision' => 'decline'
         ];
 
-        try {
-            $bayonetId = (int)$this->directQuery->customQuery(
-                'bayonet_antifraud_orders',
-                'bayonet_id',
-                $whereConditions
-            );
-            $trackingId = $this->directQuery->customQuery(
-                'bayonet_antifraud_orders',
-                'bayonet_tracking_id',
-                $whereConditions
-            );
+        $bayonetId = (int)$this->directQuery->customQuery(
+            'bayonet_antifraud_orders',
+            'bayonet_id',
+            $whereConditions
+        );
+        $trackingId = $this->directQuery->customQuery(
+            'bayonet_antifraud_orders',
+            'bayonet_tracking_id',
+            $whereConditions
+        );
 
-            if (!$bayonetId) {
-                return;
-            }
-
-            if (!$trackingId) {
-                $currentOrderId = $this->directQuery->customQuery(
-                    'bayonet_antifraud_orders',
-                    'entity_id',
-                    [
-                        'bayonet_id' => $bayonetId
-                    ]
-                );
-
-                if (!$currentOrderId) {
-                    $bayonetOrder = $this->bayonetOrderFactory->create();
-                    $orderData = [
-                        'bayonet_id' => $bayonetId,
-                        'entity_id' => $order->getId()
-                    ];
-                    $bayonetOrder->setData($orderData);
-                    $bayonetOrder->save();
-                }
-                return;
-            }
-
-            $currentState = $this->directQuery->customQuery(
-                'bayonet_antifraud_orders',
-                'current_state',
-                $whereConditions
-            );
-
-            if ($currentState === $order->getState()) {
-                return;
-            }
-
-            $requestBody = [
-                'bayonet_tracking_id' => $trackingId,
-                'transaction_status' => $this->orderHelper->getTransactionStatus()
-            ];
-
-            $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
-
-            $response = $this->requestHelper->updateTransaction($requestBody);
-            $bayonetOrder = $this->bayonetOrderFactory->create();
-            $orderData = [
-                'bayonet_id' => $bayonetId,
-                'current_state' => $order->getState()
-            ];
-
-            if (!$currentState) {
-                $orderData['entity_id'] = $order->getId();
-            }
-
-            if ($response) {
-                $orderData['feedback_api'] = 1;
-                $orderData['feedback_api_response'] = json_encode(
-                    [
-                        'reason_code' => $response->reason_code,
-                        'reason_message' => $response->reason_message,
-                    ]
-                );
-            } else {
-                $orderData['feedback_api'] = 0;
-            }
-            $bayonetOrder->setData($orderData);
-            $bayonetOrder->save();
-        } catch (\Exception $e) {
+        if (!$bayonetId) {
             return;
         }
+
+        if (!$trackingId) {
+            $currentOrderId = $this->directQuery->customQuery(
+                'bayonet_antifraud_orders',
+                'entity_id',
+                [
+                    'bayonet_id' => $bayonetId
+                ]
+            );
+
+            if (!$currentOrderId) {
+                $bayonetOrder = $this->bayonetOrderFactory->create();
+                $orderData = [
+                    'bayonet_id' => $bayonetId,
+                    'entity_id' => $order->getId()
+                ];
+                $bayonetOrder->setData($orderData);
+                $bayonetOrder->save();
+            }
+            return;
+        }
+
+        $currentState = $this->directQuery->customQuery(
+            'bayonet_antifraud_orders',
+            'current_state',
+            $whereConditions
+        );
+
+        if ($currentState === $order->getState()) {
+            return;
+        }
+
+        $requestBody = [
+            'bayonet_tracking_id' => $trackingId,
+            'transaction_status' => $this->orderHelper->getTransactionStatus()
+        ];
+
+        $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
+
+        $response = $this->requestHelper->updateTransaction($requestBody);
+        $bayonetOrder = $this->bayonetOrderFactory->create();
+        $orderData = [
+            'bayonet_id' => $bayonetId,
+            'current_state' => $order->getState()
+        ];
+
+        if (!$currentState) {
+            $orderData['entity_id'] = $order->getId();
+        }
+
+        if ($response) {
+            $orderData['feedback_api'] = 1;
+            $orderData['feedback_api_response'] = json_encode(
+                [
+                    'reason_code' => $response->reason_code,
+                    'reason_message' => $response->reason_message,
+                ]
+            );
+        } else {
+            $orderData['feedback_api'] = 0;
+        }
+        $bayonetOrder->setData($orderData);
+        $bayonetOrder->save();
     }
 }

@@ -71,54 +71,48 @@ class OrderPlaced implements ObserverInterface
             return;
         }
         
-        try {
-            $this->orderHelper->setOrder($order);
-            $requestBody = $this->orderHelper->generateRequestBody('consulting');
-            $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
-            $response = $this->requestHelper->consulting($requestBody);
-            $bayonetOrder = $this->bayonetOrderFactory->create();
-            $orderData = [
-                'quote_id' => $requestBody['order_id'],
-                'api_mode' => $apiMode
-            ];
+        $this->orderHelper->setOrder($order);
+        $requestBody = $this->orderHelper->generateRequestBody('consulting');
+        $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
+        $response = $this->requestHelper->consulting($requestBody);
+        $bayonetOrder = $this->bayonetOrderFactory->create();
+        $orderData = [
+            'quote_id' => $requestBody['order_id'],
+            'api_mode' => $apiMode
+        ];
 
-            if (isset($response)) {
-                $orderData['bayonet_tracking_id'] = (int)$response->reason_code === 0 ?
-                    $response->bayonet_tracking_id :
-                    null;
-                $orderData['consulting_api'] = (int)$response->reason_code === 0 ? 1 : 0;
-                $orderData['consulting_api_response'] = json_encode(
-                    [
-                        'reason_code' => $response->reason_code,
-                        'reason_message' => $response->reason_message,
-                    ]
-                );
-                $orderData['decision'] = (int)$response->reason_code === 0 ? $response->decision : null;
-                $orderData['triggered_rules'] = (int)$response->reason_code === 0 ?
-                    $this->getTriggeredRules($response) :
-                    null;
-                $orderData['executed'] = 1;
-                $bayonetOrder->setData($orderData);
-                $bayonetOrder->save();
+        if (isset($response)) {
+            $orderData['bayonet_tracking_id'] = (int)$response->reason_code === 0 ?
+                $response->bayonet_tracking_id :
+                null;
+            $orderData['consulting_api'] = (int)$response->reason_code === 0 ? 1 : 0;
+            $orderData['consulting_api_response'] = json_encode(
+                [
+                    'reason_code' => $response->reason_code,
+                    'reason_message' => $response->reason_message,
+                ]
+            );
+            $orderData['decision'] = (int)$response->reason_code === 0 ? $response->decision : null;
+            $orderData['triggered_rules'] = (int)$response->reason_code === 0 ?
+                $this->getTriggeredRules($response) :
+                null;
+            $orderData['executed'] = 1;
+            $bayonetOrder->setData($orderData);
+            $bayonetOrder->save();
 
-                if (isset($response->decision) && $response->decision === 'decline') {
-                    $this->addBlocklistRows($requestBody['email']);
-                    throw new \Magento\Framework\Exception\ValidatorException(__(
-                        "There was an error processing your order. Please try again later"
-                    ));
-                }
-            } else {
-                $orderData['consulting_api'] = 0;
-                $orderData['executed'] = 0;
-                $bayonetOrder->setData($orderData);
-                $bayonetOrder->save();
-            }
-
-            if (isset($response)) {
+            if (isset($response->decision) && $response->decision === 'decline') {
                 $this->addBlocklistRows($requestBody['email']);
+                throw new \Magento\Framework\Exception\LocalizedException(__("There was an error processing your order. Please try again later"));
             }
-        } catch (\Exception $e) {
-            return;
+        } else {
+            $orderData['consulting_api'] = 0;
+            $orderData['executed'] = 0;
+            $bayonetOrder->setData($orderData);
+            $bayonetOrder->save();
+        }
+
+        if (isset($response)) {
+            $this->addBlocklistRows($requestBody['email']);
         }
     }
 
