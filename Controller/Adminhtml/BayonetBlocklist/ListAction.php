@@ -46,10 +46,7 @@ class ListAction extends Action
         $blocklistCurrent = $this->getRequest()->getParam('blocklistValue');
         $listToManage = $this->getRequest()->getParam('list');
         $actionToPerform = $this->getRequest()->getParam('action');
-        $apiMode = $this->getRequest()->getParam('api_mode');
-        $apiKey = (int)$apiMode === 1 ?
-            $this->getHelper->getConfigValue('bayonet_live_key') :
-            $this->getHelper->getConfigValue('bayonet_sandbox_key');
+        $apiKey = $this->getHelper->getConfigValue('bayonet_live_key');
 
         if (isset($apiKey) && $apiKey !== '') {
             $requestBody = [

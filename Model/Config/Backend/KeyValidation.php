@@ -135,9 +135,9 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 parent::beforeSave();
             }
         } elseif (empty($apiKey) && strpos($label, 'Live') !== false) {
-            $currentApiMode = $this->getHelper->getConfigValue('api_mode');
+            $enabled = $this->getHelper->getConfigValue('enable');
 
-            if ((int)$currentApiMode === 1) { // to avoid saving an empty live key when the current API mode is set to live
+            if ((int)$enabled === 1) { // to avoid saving an empty live key when the module is enabled
                 throw new \Magento\Framework\Exception\ValidatorException(__(
                     'Cannot save an empty live (production) API key when the live (production) mode is enabled'
                 ));

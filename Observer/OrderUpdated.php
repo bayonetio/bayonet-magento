@@ -51,9 +51,12 @@ class OrderUpdated implements ObserverInterface
         $order = $observer->getEvent()->getOrder();
         $apiMode = $this->getHelper->getConfigValue('api_mode');
         $liveKey = $this->getHelper->getConfigValue('bayonet_live_key');
-        $sandboxKey = $this->getHelper->getConfigValue('bayonet_sandbox_key');
 
         if (!$order) {
+            return;
+        }
+
+        if (!$liveKey) {
             return;
         }
 
@@ -114,7 +117,7 @@ class OrderUpdated implements ObserverInterface
             'transaction_status' => $this->orderHelper->getTransactionStatus()
         ];
 
-        $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
+        $requestBody['auth']['api_key'] = $liveKey;
 
         $response = $this->requestHelper->updateTransaction($requestBody);
         $bayonetOrder = $this->bayonetOrderFactory->create();
