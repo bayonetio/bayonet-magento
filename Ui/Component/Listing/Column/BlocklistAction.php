@@ -63,7 +63,6 @@ class BlocklistAction extends Column
                                     'whitelistValue' => $item['whitelist'],
                                     'list' => $listToManage,
                                     'action' => $actionToPerform,
-                                    'api_mode' => $item['api_mode']
                                 ]
                             ),
                             'label' => $actionLabel,
