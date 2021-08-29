@@ -111,6 +111,13 @@ class Backfill extends Command
         $orders;
         $bayonetBackfill = $this->bayonetBackfillFactory->create();
         $backfillData = $bayonetBackfill->getCollection();
+        $liveKey = $this->getHelper->getConfigValue('bayonet_live_key');
+
+        if (!$liveKey) {
+            $output->writeln("There is no API key to perform this process. You must save your API key before executing this process");
+            return;
+        }
+
         if ($backfillData->getSize() < 1) {  // checks if this is the first execution
             $orders = $this->getAllOrders(0, 0, 0);
             $dataToInsert = [
