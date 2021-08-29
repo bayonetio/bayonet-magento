@@ -16,7 +16,7 @@ Added,Added
 "Not added","Not added"
 "Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first","Cannot set the API mode to live (production) with no live (production) API keys saved. Please save your live (production) API keys first"
 "This API version is invalid, please try again","This API version is invalid, please try again"
-"Cannot enable the module with no pair of API keys saved. Please save a pair of API keys first","Cannot enable the module with no pair of API keys saved. Please save a pair of API keys first"
+"Cannot enable the module with no pair of API keys saved. Please save your pair of API keys first","Cannot enable the module with no pair of API keys saved. Please save your pair of API keys first"
 "Invalid value for the %1. Please check your key and try again","Invalid value for the %1. Please check your key and try again"
 "%1: The key you entered has expired, please generate a new key from Bayonet's console","%1: The key you entered has expired, please generate a new key from Bayonet's console"
 "%1: Source IP is not valid, please add your IP to the whitelist in Bayonet's console","%1: Source IP is not valid, please add your IP to the whitelist in Bayonet's console"
