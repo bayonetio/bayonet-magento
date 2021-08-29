@@ -30,7 +30,7 @@ class InstallData implements InstallDataInterface
             \Magento\Store\Model\Store::DEFAULT_STORE_ID
         )->saveConfig(
             'bayonetantifraud_general/general/api_mode',
-            0,
+            1,
             \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
             \Magento\Store\Model\Store::DEFAULT_STORE_ID
         );
