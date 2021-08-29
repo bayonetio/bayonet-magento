@@ -37,26 +37,10 @@
                     <comment>When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already</comment>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\EnableValidation</backend_model>
                 </field>
-                <field id="api_mode" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Live (production) Mode Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live (production) API keys have been saved already</comment>
-                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\ApiModeValidation</backend_model>
-                </field>
                 <field id="api_version" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>API Version</label>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\ApiVersionValidation</backend_model>
                     <comment>The current version of the API. This must not be modified unless asked by the developer</comment>
-                </field>
-                <field id="bayonet_sandbox_key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Bayonet Sandbox (test) Key</label>
-                    <comment><![CDATA[The sandbox (test) API key for Bayonet. <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer"> Get the key</a>]]></comment>
-                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
-                </field>
-                <field id="js_sandbox_key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Device Fingerprint Sandbox (test) Key</label>
-                    <comment><![CDATA[The sandbox (test) API key for the Device Fingerprint. <a href="https://bayonet.io/developers/setup" target="_blank" rel="noopener noreferrer"> Get the key</a>]]></comment>
-                    <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\KeyValidation</backend_model>
                 </field>
                 <field id="bayonet_live_key" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Bayonet Live (production) Key</label>
