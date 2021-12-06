@@ -22,7 +22,7 @@ Added,Added
 "%1: Source IP is not valid, please add your IP to the whitelist in Bayonet's console","%1: Source IP is not valid, please add your IP to the whitelist in Bayonet's console"
 "%1: Store domain is not registered, please add your store domain to the whitelist in Bayonet's console","%1: Store domain is not registered, please add your store domain to the whitelist in Bayonet's console"
 "An error ocurred while validating the %1. Please try again","An error ocurred while validating the %1. Please try again"
-"Cannot save an empty live (production) API key when the live (production) mode is enabled","Cannot save an empty live (production) API key when the live (production) mode is enabled"
+"Cannot save an empty API key when the module is enabled","Cannot save an empty API key when the module is enabled"
 "Bayonet Sandbox (test) Key","Bayonet Sandbox (test) Key"
 "Device Fingerprint Sandbox (test) Key","Device Fingerprint (test) Key"
 "Bayonet Live (production) Key","Bayonet Live (production) Key"
@@ -84,7 +84,7 @@ Blocklist/Whitelist,Blocklist/Whitelist
                 
                 "
 "Module Enabled","Module Enabled"
-"When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already","When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already"
+"When disabled, the module will not process any orders. Can only be enabled when the pair of keys has been saved already","When disabled, the module will not process any orders. Can only be enabled when the pair of keys has been saved already"
 "Live (production) Mode Enabled","Live (production) Mode Enabled"
 "When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live (production) API keys have been saved already","When disabled, the module will process all new orders in sandbox (test) mode. Can only be enabled when both live (production) API keys have been saved already"
 "API Version","API Version"

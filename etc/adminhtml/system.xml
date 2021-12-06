@@ -34,7 +34,7 @@
                 <field id="enable" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Module Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>When disabled, the module will not process any orders. Can only be enabled when at least one pair is keys has been saved already</comment>
+                    <comment>When disabled, the module will not process any orders. Can only be enabled when the pair of keys has been saved already</comment>
                     <backend_model>Bayonet\BayonetAntiFraud\Model\Config\Backend\EnableValidation</backend_model>
                 </field>
                 <field id="api_version" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">

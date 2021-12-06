@@ -139,7 +139,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
 
             if ((int)$enabled === 1) { // to avoid saving an empty live key when the module is enabled
                 throw new \Magento\Framework\Exception\ValidatorException(__(
-                    'Cannot save an empty live (production) API key when the live (production) mode is enabled'
+                    'Cannot save an empty API key when the module is enabled'
                 ));
             }
         }
