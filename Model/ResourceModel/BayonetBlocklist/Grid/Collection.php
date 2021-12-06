@@ -7,8 +7,6 @@ namespace Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist\Grid;
  */
 class Collection extends \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBlocklist\Collection implements \Magento\Framework\Api\Search\SearchResultInterface
 {
-    protected $_aggregations;
-
     public function __construct(
         \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
         \Psr\Log\LoggerInterface $logger,
@@ -34,7 +32,7 @@ class Collection extends \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBl
      */
     public function getAggregations()
     {
-        return $this->_aggregations;
+        return $this->aggregations;
     }
 
     /**
@@ -43,7 +41,7 @@ class Collection extends \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBl
      */
     public function setAggregations($aggregations)
     {
-        $this->_aggregations = $aggregations;
+        $this->aggregations = $aggregations;
     }
 
     /**
@@ -66,7 +64,7 @@ class Collection extends \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBl
      */
     public function getSearchCriteria()
     {
-        return null;
+        return $this->searchCriteria;
     }
 
     /**
@@ -78,6 +76,7 @@ class Collection extends \Bayonet\BayonetAntiFraud\Model\ResourceModel\BayonetBl
      */
     public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
     {
+        $this->searchCriteria = $searchCriteria;
         return $this;
     }
 
