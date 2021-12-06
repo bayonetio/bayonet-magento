@@ -59,19 +59,10 @@ class Fingerprint extends Template
      */
     public function getApiKey()
     {
-        $apiMode = (int)$this->directQuery->customQuery(
-            'core_config_data',
-            'value',
-            ['path' => 'bayonetantifraud_general/general/api_mode']
-        );
-        $apiKey = $apiMode === 1 ? $this->directQuery->customQuery(
+        $apiKey = $this->directQuery->customQuery(
             'core_config_data',
             'value',
             ['path' => 'bayonetantifraud_general/general/js_live_key']
-        ) : $this->directQuery->customQuery(
-            'core_config_data',
-            'value',
-            ['path' => 'bayonetantifraud_general/general/js_sandbox_key']
         );
         
         return $apiKey;

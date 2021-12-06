@@ -49,16 +49,12 @@ class EnableValidation extends \Magento\Framework\App\Config\Value
         $enabled = $this->getValue();
         $bayoLiveKey = $this->getHelper->getConfigValue('bayonet_live_key');
         $jsLiveKey = $this->getHelper->getConfigValue('js_live_key');
-        $bayoSandboxKey = $this->getHelper->getConfigValue('bayonet_sandbox_key');
-        $jsSandboxKey = $this->getHelper->getConfigValue('js_sandbox_key');
 
-        if ((1 === (int)$enabled && (isset($bayoLiveKey) && isset($jsLiveKey))) ||
-            (1 === (int)$enabled && (isset($bayoSandboxKey) && isset($jsSandboxKey)))) {
+        if (1 === (int)$enabled && (isset($bayoLiveKey) && isset($jsLiveKey))) {
             parent::beforeSave();
-        } elseif ((1 === (int)$enabled && (!isset($bayoLiveKey) || !isset($jsLiveKey))) ||
-            (1 === (int)$enabled && (!isset($bayoSandboxKey) || !isset($jsSandboxKey)))) {
+        } elseif (1 === (int)$enabled && (!isset($bayoLiveKey) || !isset($jsLiveKey))) {
                 throw new \Magento\Framework\Exception\ValidatorException(__(
-                    'Cannot enable the module with no pair of API keys saved. Please save a pair of API keys first'
+                    'Cannot enable the module with no pair of API keys saved. Please save your pair of API keys first'
                 ));
         }
     }
