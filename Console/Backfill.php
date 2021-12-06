@@ -111,6 +111,13 @@ class Backfill extends Command
         $orders;
         $bayonetBackfill = $this->bayonetBackfillFactory->create();
         $backfillData = $bayonetBackfill->getCollection();
+        $liveKey = $this->getHelper->getConfigValue('bayonet_live_key');
+
+        if (!$liveKey) {
+            $output->writeln("There is no API key to perform this process. You must save your API key before executing this process");
+            return;
+        }
+
         if ($backfillData->getSize() < 1) {  // checks if this is the first execution
             $orders = $this->getAllOrders(0, 0, 0);
             $dataToInsert = [
@@ -130,16 +137,21 @@ class Backfill extends Command
         }
         foreach ($orders as $order) {
             if ((int)$this->directQuery->getConfigValue('bayonetantifraud_general/general/api_mode') === 1) { // checks if the API mode has not been changed to sandbox
-                $requestBody = $this->prepareRequestBody($order);
-                $response = $this->requestHelper->feedbackHistorical($requestBody);
-                $dataToUpdate = [
-                    'backfill_id' => $backfillData->getFirstItem()->getData('backfill_id'),
-                    'processed_orders' => (int)$backfillData->getFirstItem()->getData('processed_orders') + 1,
-                    'last_processed_order' => $order->getId()
-                ];
-                $bayonetBackfill->setData($dataToUpdate);
-                $bayonetBackfill->save();
-                $backfillData = $bayonetBackfill->getCollection();
+                if (!empty($this->directQuery->getConfigValue('bayonetantifraud_general/general/bayonet_live_key'))) { // checks if the API key has not been removed
+                    $requestBody = $this->prepareRequestBody($order);
+                    $response = $this->requestHelper->feedbackHistorical($requestBody);
+                    $dataToUpdate = [
+                        'backfill_id' => $backfillData->getFirstItem()->getData('backfill_id'),
+                        'processed_orders' => (int)$backfillData->getFirstItem()->getData('processed_orders') + 1,
+                        'last_processed_order' => $order->getId()
+                    ];
+                    $bayonetBackfill->setData($dataToUpdate);
+                    $bayonetBackfill->save();
+                    $backfillData = $bayonetBackfill->getCollection();
+                } else {
+                    $output->writeln("The API key has been removed, exiting process.");
+                    return;
+                }
             } else {
                 $output->writeln("API Mode is currently set to testing, exiting process.");
                 return;

@@ -18,7 +18,7 @@ class GetData extends AbstractHelper
     public function getConfigValue($field, $storeId = null)
     {
         return $this->scopeConfig->getValue(
-            self::XML_PATH_BAYONETANTIFRAUD .'general/'. $field,
+            self::XML_PATH_BAYONETANTIFRAUD . 'general/' . $field,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

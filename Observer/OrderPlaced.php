@@ -56,14 +56,13 @@ class OrderPlaced implements ObserverInterface
         $quoteId = $order->getQuoteId();
         $moduleEnabled = $this->getHelper->getConfigValue('enable');
         $apiMode = $this->getHelper->getConfigValue('api_mode');
-        $sandboxKey = $this->getHelper->getConfigValue('bayonet_sandbox_key');
         $liveKey = $this->getHelper->getConfigValue('bayonet_live_key');
         
         if (!$moduleEnabled || (int)$moduleEnabled === 0) {
             return;
         }
         
-        if ((!$sandboxKey && (int)$apiMode === 0) || (!$liveKey && (int)$apiMode === 1)) {
+        if (!$liveKey && (int)$apiMode === 1) {
             return;
         }
         
@@ -73,7 +72,7 @@ class OrderPlaced implements ObserverInterface
         
         $this->orderHelper->setOrder($order);
         $requestBody = $this->orderHelper->generateRequestBody('consulting');
-        $requestBody['auth']['api_key'] = (int)$apiMode === 1 ? $liveKey : $sandboxKey;
+        $requestBody['auth']['api_key'] = $liveKey;
         $response = $this->requestHelper->consulting($requestBody);
         $bayonetOrder = $this->bayonetOrderFactory->create();
         $orderData = [
@@ -157,12 +156,12 @@ class OrderPlaced implements ObserverInterface
         if (empty($blocklistIds)) {
             $blocklistData = [
                 'email' => $email,
-                'api_mode' => 0
+                'api_mode' => 1
             ];
 
             $bayonetBlocklist->setData($blocklistData);
             $bayonetBlocklist->save();
-            $blocklistData['api_mode'] = 1; // add row for live API mode
+            $blocklistData['api_mode'] = 0; // add row for sandbox API mode
             $bayonetBlocklist->setData($blocklistData);
             $bayonetBlocklist->save();
         }

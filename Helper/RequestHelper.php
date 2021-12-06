@@ -22,6 +22,8 @@ class RequestHelper
         $this->getHelper = $getHelper;
     }
 
+    /////////////////////// ORDERS ENDPOINTS ////////////////////////////
+
     /**
      * Performs a consulting request to the Bayonet API
      *
@@ -61,6 +63,8 @@ class RequestHelper
         return $updateResponse;
     }
 
+    /////////////////////// FINGERPRINT ENDPOINTS ////////////////////////////
+
     /**
      * Performs a request to the Fingerprint API
      * Used only to validate fingerprint API keys
@@ -74,6 +78,8 @@ class RequestHelper
 
         return $deviceFingerprintResponse;
     }
+
+    /////////////////////// LISTS ENDPOINTS ////////////////////////////
 
     /**
      * Defines "whitelist/add" as the call to be executed in the request method
@@ -126,6 +132,8 @@ class RequestHelper
 
         return $listResponse;
     }
+
+    // REQUEST FUNCTIONS //
 
     /**
      * Performs a request to the defined endpoint in the parameters, using the
