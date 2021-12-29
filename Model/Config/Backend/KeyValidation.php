@@ -50,7 +50,7 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
     public function beforeSave()
     {
         $invalidBayonet = [ 12, 13, 15 ];
-        $invalidJS = [ 12, 15, 16];
+        $invalidJS = [ 12, 15, 16 ];
         $apiKey = $this->getValue();
         $label = $this->translateKeyLabel($this->getData('field_config/label'));
         $fieldId = $this->getData('field_config/id');
@@ -96,7 +96,8 @@ class KeyValidation extends \Magento\Framework\App\Config\Value
                 $requestBody['auth']['jsKey'] = $apiKey;
                 $response = $this->requestHelper->deviceFingerprint($requestBody);
 
-                if (isset($response->reasonCode) && (int)$response->reasonCode === 51) {
+                if (isset($response->reasonCode) && (int)$response->reasonCode === 51 ||
+                    isset($response->reasonCode) && (int)$response->reasonCode === 0) {
                     $this->setValue(($this->getValue()));
                     parent::beforeSave();
                 } elseif (isset($response->reasonCode) && (int)$response->reasonCode === 12) {
