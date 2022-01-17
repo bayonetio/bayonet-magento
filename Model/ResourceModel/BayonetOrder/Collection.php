@@ -33,7 +33,7 @@ class Collection extends AbstractCollection
     public function getSelectCountSql()
     {
         $countSelect = parent::getSelectCountSql();
-        $countSelect->reset(\Zend_Db_Select::GROUP);
+        $countSelect->reset(\Magento\Framework\DB\Select::GROUP);
         return $countSelect;
     }
     /**
