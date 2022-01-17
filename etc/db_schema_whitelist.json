@@ -1,0 +1,72 @@
+{
+    "bayonet_antifraud_orders": {
+        "column": {
+            "bayonet_id": true,
+            "entity_id": true,
+            "quote_id": true,
+            "bayonet_tracking_id": true,
+            "api_mode": true,
+            "consulting_api": true,
+            "consulting_api_response": true,
+            "feedback_api": true,
+            "feedback_api_response": true,
+            "decision": true,
+            "triggered_rules": true,
+            "executed": true,
+            "current_state": true,
+            "date_added": true
+        },
+        "index": {
+            "BAYONET_ANTIFRAUD_ORDERS_BAYONET_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "bayonet_antifraud_backfill": {
+        "column": {
+            "backfill_id": true,
+            "backfill_status": true,
+            "processed_orders": true,
+            "total_orders": true,
+            "last_processed_order": true,
+            "last_backfill_order": true
+        },
+        "index": {
+            "BAYONET_ANTIFRAUD_BACKFILL_BACKFILL_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "bayonet_antifraud_blocklist": {
+        "column": {
+            "blocklist_id": true,
+            "email": true,
+            "whitelist": true,
+            "blocklist": true,
+            "response_code": true,
+            "response_message": true,
+            "api_mode": true
+        },
+        "index": {
+            "BAYONET_ANTIFRAUD_BLOCKLIST_BLOCKLIST_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "bayonet_antifraud_fingerprint": {
+        "column": {
+            "fingerprint_id": true,
+            "customer_id": true,
+            "fingerprint_token": true
+        },
+        "index": {
+            "BAYONET_ANTIFRAUD_FINGERPRINT_FINGERPRINT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="bayonet_antifraud_orders">
+        <column xsi:type="int" name="bayonet_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Bayonet ID"/>
+        <column xsi:type="varchar" name="entity_id" nullable="true" length="255" comment="Order ID"/>
+        <column xsi:type="varchar" name="quote_id" nullable="false" length="40" comment="Quote ID"/>
+        <column xsi:type="varchar" name="bayonet_tracking_id" nullable="true" length="255" comment="Bayonet Tracking ID"/>
+        <column xsi:type="int" name="api_mode" padding="10" unsigned="true" nullable="false" comment="API Mode"/>
+        <column xsi:type="int" name="consulting_api" padding="10" unsigned="true" nullable="false" comment="Consulting API"/>
+        <column xsi:type="varchar" name="consulting_api_response" nullable="true" length="255" comment="Consulting API response"/>
+        <column xsi:type="int" name="feedback_api" padding="10" unsigned="true" nullable="false" comment="Feedback API"/>
+        <column xsi:type="varchar" name="feedback_api_response" nullable="true" length="255" comment="Feedback API response"/>
+        <column xsi:type="varchar" name="decision" nullable="true" length="255" comment="Decision"/>
+        <column xsi:type="text" name="triggered_rules" nullable="true" comment="Triggered Rules"/>
+        <column xsi:type="int" name="executed" padding="10" unsigned="true" nullable="false" comment="API executed for order"/>
+        <column xsi:type="varchar" name="current_state" nullable="true" length="45" comment="Current State"/>
+        <column xsi:type="timestamp" name="date_added" comment="Date Added"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="bayonet_id"/>
+        </constraint>
+        <index referenceId="INDEX_PRIMARY" indexType="btree">
+            <column name="bayonet_id"/>
+        </index>
+    </table>
+    <table name="bayonet_antifraud_backfill">
+        <column xsi:type="int" name="backfill_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Backfill ID"/>
+        <column xsi:type="int" name="backfill_status" padding="10" unsigned="true" nullable="false" default="0" comment="Backfill Status"/>
+        <column xsi:type="int" name="processed_orders" padding="10" unsigned="true" nullable="false" default="0" comment="Processed Orders"/>
+        <column xsi:type="int" name="total_orders" padding="10" unsigned="true" nullable="false" default="0" comment="Total Orders"/>
+        <column xsi:type="varchar" name="last_processed_order" nullable="false" length="255" default="" comment="Last Processed Order"/>
+        <column xsi:type="varchar" name="last_backfill_order" nullable="false" length="255" default="" comment="Last Backfill Order"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="backfill_id"/>
+        </constraint>
+        <index referenceId="INDEX_PRIMARY" indexType="btree">
+            <column name="backfill_id"/>
+        </index>
+    </table>
+    <table name="bayonet_antifraud_blocklist">
+        <column xsi:type="int" name="blocklist_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Bayonet Blocklist ID"/>
+        <column xsi:type="varchar" name="email" nullable="false" length="255" default="" comment="Customer Email"/>
+        <column xsi:type="int" name="whitelist" padding="10" unsigned="true" nullable="false" default="0" comment="Whitelist Status"/>
+        <column xsi:type="int" name="blocklist" padding="10" unsigned="true" nullable="false" default="0" comment="Blocklist Status"/>
+        <column xsi:type="int" name="response_code" padding="10" unsigned="true" nullable="false" comment="Response Code"/>
+        <column xsi:type="varchar" name="response_message" nullable="false" length="255" comment="Response Message"/>
+        <column xsi:type="int" name="api_mode" padding="10" unsigned="true" nullable="false" comment="API Mode"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="blocklist_id"/>
+        </constraint>
+        <index referenceId="INDEX_PRIMARY" indexType="btree">
+            <column name="blocklist_id"/>
+        </index>
+    </table>
+    <table name="bayonet_antifraud_fingerprint">
+        <column xsi:type="int" name="fingerprint_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Bayonet Fingerprint ID"/>
+        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="varchar" name="fingerprint_token" nullable="false" length="255" comment="Bayonet Fingerprint Token"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="fingerprint_id"/>
+        </constraint>
+        <index referenceId="INDEX_PRIMARY" indexType="btree">
+            <column name="fingerprint_id"/>
+        </index>
+    </table>
+</schema>
